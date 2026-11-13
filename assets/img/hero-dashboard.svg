@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" fill="none" role="img" aria-label="Ilustrasi matryoshka dan kota Moskow">
+  <defs>
+    <linearGradient id="domeGold" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#FCD34D"/>
+      <stop offset="1" stop-color="#E09B19"/>
+    </linearGradient>
+    <linearGradient id="domeBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#93C5FD"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="doll" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F87171"/>
+      <stop offset="1" stop-color="#DC2626"/>
+    </linearGradient>
+    <linearGradient id="dollScarf" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#0B2F5E" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#0B2F5E" stop-opacity=".12"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Matahari -->
+  <circle cx="330" cy="56" r="31" fill="#FBBF24" opacity=".95"/>
+  <circle cx="330" cy="56" r="46" stroke="#FDE68A" stroke-opacity=".35" stroke-width="2"/>
+  <circle cx="330" cy="56" r="60" stroke="#FDE68A" stroke-opacity=".16" stroke-width="2"/>
+
+  <!-- Salju -->
+  <circle cx="52" cy="44" r="3" fill="#fff" opacity=".6"/>
+  <circle cx="86" cy="78" r="2" fill="#fff" opacity=".5"/>
+  <circle cx="145" cy="34" r="2.5" fill="#fff" opacity=".55"/>
+  <circle cx="250" cy="26" r="2" fill="#fff" opacity=".45"/>
+  <circle cx="292" cy="112" r="2" fill="#fff" opacity=".5"/>
+
+  <!-- Siluet kota -->
+  <g opacity=".9">
+    <rect x="30" y="196" width="52" height="52" rx="4" fill="#0B2F5E" opacity=".65"/>
+    <rect x="42" y="178" width="28" height="20" rx="3" fill="#0B2F5E" opacity=".55"/>
+    <rect x="92" y="186" width="58" height="62" rx="5" fill="#0B2F5E" opacity=".72"/>
+    <rect x="310" y="182" width="58" height="66" rx="5" fill="#0B2F5E" opacity=".72"/>
+    <rect x="322" y="164" width="34" height="20" rx="3" fill="#0B2F5E" opacity=".6"/>
+    <rect x="374" y="200" width="18" height="48" rx="4" fill="#0B2F5E" opacity=".5"/>
+
+    <!-- Katedral -->
+    <path d="M168 244V190h92v54z" fill="#0B2F5E" opacity=".8"/>
+    <path d="M184 190v-14h60v14z" fill="#0B2F5E" opacity=".7"/>
+
+    <!-- Kubah bawang -->
+    <g>
+      <path d="M212 126c-11 13-11 27 2 34 13-7 13-21 2-34z" fill="url(#domeGold)"/>
+      <path d="M214 120l1-9 1 9z" fill="#FDE68A"/>
+      <rect x="211" y="160" width="6" height="18" rx="3" fill="#FDE68A"/>
+    </g>
+    <g>
+      <path d="M172 140c-9 11-9 23 2 29 11-6 11-18 2-29z" fill="url(#domeBlue)"/>
+      <path d="M174 135l1-8 1 8z" fill="#BFDBFE"/>
+      <rect x="171" y="169" width="6" height="16" rx="3" fill="#BFDBFE"/>
+    </g>
+    <g>
+      <path d="M254 140c-9 11-9 23 2 29 11-6 11-18 2-29z" fill="#F472B6"/>
+      <path d="M256 135l1-8 1 8z" fill="#FBCFE8"/>
+      <rect x="253" y="169" width="6" height="16" rx="3" fill="#FBCFE8"/>
+    </g>
+
+    <!-- Jendela katedral -->
+    <rect x="200" y="198" width="10" height="18" rx="5" fill="#FDE68A" opacity=".85"/>
+    <rect x="220" y="198" width="10" height="18" rx="5" fill="#FDE68A" opacity=".6"/>
+    <rect x="190" y="224" width="10" height="20" rx="3" fill="#FDE68A" opacity=".45"/>
+    <rect x="230" y="224" width="10" height="20" rx="3" fill="#FDE68A" opacity=".45"/>
+  </g>
+
+  <!-- Tanah -->
+  <path d="M12 246c70-14 150-14 220 0 58 11 105 9 156-2v36H12z" fill="url(#ground)"/>
+
+  <!-- Matryoshka -->
+  <g>
+    <ellipse cx="112" cy="252" rx="52" ry="9" fill="#081F3F" opacity=".35"/>
+    <path d="M112 152c-27 0-45 22-45 52 0 26 18 42 45 42s45-16 45-42c0-30-18-52-45-52z" fill="url(#doll)"/>
+    <path d="M112 152c-15 0-26 7-33 17 9 5 20 8 33 8s24-3 33-8c-7-10-18-17-33-17z" fill="url(#dollScarf)"/>
+    <circle cx="112" cy="140" r="27" fill="#FDE68A"/>
+    <path d="M112 113c-16 0-28 12-28 28 0 4 1 7 2 10 12-6 24-9 38-9 6 0 11 .5 16 1 1-2 1-4 1-6 0-14-12-24-29-24z" fill="url(#dollScarf)"/>
+    <circle cx="101" cy="141" r="3" fill="#7C2D12"/>
+    <circle cx="123" cy="141" r="3" fill="#7C2D12"/>
+    <path d="M104 153c4 4 12 4 16 0" stroke="#B45309" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="95" cy="151" r="5" fill="#FCA5A5" opacity=".8"/>
+    <circle cx="129" cy="151" r="5" fill="#FCA5A5" opacity=".8"/>
+    <!-- Bunga di badan -->
+    <circle cx="112" cy="201" r="13" fill="#FDE68A" opacity=".95"/>
+    <circle cx="112" cy="201" r="6" fill="#0F3F7A"/>
+    <path d="M112 188v26M99 201h26M103 192l18 18M121 192l-18 18" stroke="#FDE68A" stroke-width="3" stroke-linecap="round"/>
+    <!-- Huruf di badan -->
+    <text x="112" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#fff" opacity=".9">РУС</text>
+  </g>
+</svg>

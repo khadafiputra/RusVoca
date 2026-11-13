@@ -1,0 +1,35 @@
+# ---------------------------------------------------------------------------
+# Normalisasi akhir baris & deteksi bahasa
+# ---------------------------------------------------------------------------
+
+# Default: teks memakai LF di repository, checkout mengikuti OS.
+* text=auto eol=lf
+
+# File yang harus tetap LF
+*.php   text eol=lf
+*.css   text eol=lf
+*.js    text eol=lf
+*.sql   text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf
+*.html  text eol=lf
+*.svg   text eol=lf
+*.htaccess text eol=lf
+
+# Berkas biner
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.gif   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.mp3   binary
+*.wav   binary
+
+# Statistik bahasa di GitHub (opsional)
+*.php linguist-language=PHP
+*.sql linguist-language=SQL

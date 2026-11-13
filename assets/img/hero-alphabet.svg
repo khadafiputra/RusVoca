@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" fill="none" role="img" aria-label="Ilustrasi balok huruf Kiril dan pensil">
+  <defs>
+    <linearGradient id="blokNavy" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1D4ED8"/>
+      <stop offset="1" stop-color="#0F3F7A"/>
+    </linearGradient>
+    <linearGradient id="blokGold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FCD34D"/>
+      <stop offset="1" stop-color="#E09B19"/>
+    </linearGradient>
+    <linearGradient id="blokPink" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F9A8D4"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+    <linearGradient id="pencil" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="330" cy="58" r="44" fill="#fff" opacity=".07"/>
+  <circle cx="56" cy="212" r="60" fill="#fff" opacity=".06"/>
+  <circle cx="300" cy="120" r="4" fill="#FDE68A" opacity=".8"/>
+  <circle cx="82" cy="62" r="3" fill="#FDE68A" opacity=".65"/>
+  <circle cx="352" cy="196" r="3.5" fill="#FDE68A" opacity=".55"/>
+
+  <!-- Balok Б belakang -->
+  <g transform="rotate(-8 250 150)">
+    <rect x="212" y="76" width="112" height="112" rx="22" fill="url(#blokPink)" opacity=".9"/>
+    <text x="268" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="62" font-weight="800" fill="#fff">Б</text>
+  </g>
+
+  <!-- Balok В kanan -->
+  <g transform="rotate(7 288 178)">
+    <rect x="242" y="112" width="112" height="112" rx="22" fill="url(#blokGold)"/>
+    <text x="298" y="194" text-anchor="middle" font-family="Arial, sans-serif" font-size="62" font-weight="800" fill="#3B2500">В</text>
+  </g>
+
+  <!-- Balok А depan -->
+  <g transform="rotate(-5 148 160)">
+    <rect x="62" y="82" width="128" height="128" rx="26" fill="url(#blokNavy)"/>
+    <text x="126" y="174" text-anchor="middle" font-family="Arial, sans-serif" font-size="72" font-weight="800" fill="#fff">А</text>
+    <circle cx="86" cy="106" r="5" fill="#fff" opacity=".45"/>
+  </g>
+
+  <!-- Balok kecil Г -->
+  <g transform="rotate(10 74 226)">
+    <rect x="34" y="188" width="76" height="76" rx="17" fill="#fff" opacity=".95"/>
+    <text x="72" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="800" fill="#0F3F7A">Г</text>
+  </g>
+
+  <!-- Pensil -->
+  <g transform="rotate(-38 300 220)">
+    <rect x="286" y="152" width="28" height="108" rx="8" fill="url(#pencil)"/>
+    <rect x="286" y="152" width="28" height="16" rx="8" fill="#F87171"/>
+    <path d="M286 260h28l-14 22z" fill="#FDE68A"/>
+    <path d="M300 282l-5-12h10z" fill="#0F172A"/>
+  </g>
+
+  <!-- Sparkle -->
+  <path d="M186 48l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#FBBF24"/>
+  <path d="M348 228l2.5 5.5 5.5 2.5-5.5 2.5-2.5 5.5-2.5-5.5-5.5-2.5 5.5-2.5z" fill="#FDE68A" opacity=".8"/>
+</svg>

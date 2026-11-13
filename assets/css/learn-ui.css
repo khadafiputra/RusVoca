@@ -1,0 +1,369 @@
+/* ==========================================================================
+   RusVoca - Learn UI (komponen bersama)
+   Dipakai di halaman siswa agar hero, kartu, tombol audio, dan chip selalu
+   memakai bahasa visual yang sama: navy + emas, sudut membulat, dan animasi
+   halus. Tidak mengubah komponen lama, hanya menambah kelas baru.
+   ========================================================================== */
+
+:root {
+    --rv-navy: #0F3F7A;
+    --rv-blue: #2563EB;
+    --rv-sky: #60A5FA;
+    --rv-gold: #E09B19;
+    --rv-amber: #F59E0B;
+    --rv-green: #10B981;
+    --rv-red: #EF4444;
+    --rv-purple: #8B5CF6;
+    --rv-pink: #EC4899;
+    --rv-cyan: #06B6D4;
+    --rv-ink: #0F172A;
+    --rv-muted: #64748B;
+    --rv-line: #E2E8F0;
+    --rv-bg: #F4F7FA;
+    --rv-card: #FFFFFF;
+    --rv-radius: 18px;
+    --rv-shadow: 0 12px 30px rgba(15, 63, 122, 0.08);
+}
+
+/* ---------- Animasi masuk ---------- */
+@keyframes rv-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes rv-pop {
+    0%   { transform: scale(.92); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes rv-pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(224, 155, 25, .45); }
+    70%  { box-shadow: 0 0 0 12px rgba(224, 155, 25, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(224, 155, 25, 0); }
+}
+@keyframes rv-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+@keyframes rv-wave {
+    0%, 100% { transform: scaleY(.45); }
+    50%      { transform: scaleY(1); }
+}
+
+.rv-rise { animation: rv-rise .55s cubic-bezier(.2, .8, .2, 1) both; animation-delay: var(--d, 0ms); }
+.rv-pop  { animation: rv-pop .35s cubic-bezier(.2, .8, .2, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+    .rv-rise, .rv-pop, .rv-float { animation: none !important; }
+}
+
+/* ---------- Hero halaman ---------- */
+.rv-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    min-height: 210px;
+    padding: 34px 38px;
+    border-radius: 18px;
+    color: #fff;
+    background: #0B2F5E;
+    border: 1px solid #173F6B;
+    border-bottom: 3px solid var(--rv-gold);
+    box-shadow: 0 12px 28px rgba(15, 63, 122, 0.14);
+    margin-bottom: 28px;
+}
+.rv-hero-copy { flex: 1; min-width: 0; position: relative; z-index: 2; }
+.rv-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: #F3C969;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+.rv-eyebrow .dot {
+    width: 22px; height: 2px; border-radius: 0;
+    background: var(--rv-gold);
+    box-shadow: none;
+}
+.rv-hero h1,
+.rv-hero h2 {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -.5px;
+    margin-bottom: 10px;
+}
+.rv-hero h1 .hl,
+.rv-hero h2 .hl { color: #FBBF24; }
+.rv-hero p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, .86);
+    max-width: 560px;
+    font-weight: 500;
+}
+.rv-hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.rv-hero-stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.rv-stat {
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 12px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    backdrop-filter: blur(4px);
+}
+.rv-stat b { font-size: 19px; font-weight: 800; color: #fff; }
+.rv-stat span { font-size: 11px; font-weight: 700; color: rgba(255, 255, 255, .78); }
+
+.rv-hero-art {
+    width: 240px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.rv-hero-art img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 24px rgba(0, 0, 0, .22));
+}
+
+/* ---------- Tombol ---------- */
+.rv-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 11px;
+    border: 1px solid transparent;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.rv-btn:hover { transform: translateY(-2px); }
+.rv-btn-gold { background: #F2B233; color: #3B2500; box-shadow: 0 8px 18px rgba(224, 155, 25, .28); }
+.rv-btn-gold:hover { background: #F7C04A; }
+.rv-btn-light { background: rgba(255, 255, 255, .14); color: #fff; border-color: rgba(255, 255, 255, .3); }
+.rv-btn-light:hover { background: rgba(255, 255, 255, .24); }
+.rv-btn-navy { background: var(--rv-navy); color: #fff; }
+.rv-btn-navy:hover { background: #0A2D59; }
+
+/* ---------- Chip & badge ---------- */
+.rv-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #EFF6FF;
+    color: var(--rv-blue);
+    font-size: 11px;
+    font-weight: 800;
+    border: 1px solid #DBEAFE;
+    white-space: nowrap;
+}
+.rv-chip.is-green { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
+.rv-chip.is-gold { background: #FFFBEB; color: #B45309; border-color: #FDE68A; }
+.rv-chip.is-red { background: #FEF2F2; color: #B91C1C; border-color: #FECACA; }
+
+/* ---------- Judul halaman ringkas (mode belajar) ---------- */
+.rv-mode-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    background: #fff;
+    border: 1px solid var(--rv-line);
+    border-left: 3px solid var(--rv-gold);
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(15, 63, 122, .04);
+    margin-bottom: 22px;
+}
+.rv-mode-head .rv-mode-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #EFF6FF;
+    color: var(--rv-navy);
+}
+.rv-mode-head .rv-mode-icon svg { width: 22px; height: 22px; }
+.rv-mode-head .rv-mode-copy { flex: 1; min-width: 0; }
+.rv-mode-head .rv-mode-eyebrow {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: var(--rv-gold);
+    margin-bottom: 3px;
+}
+.rv-mode-head h1 {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+    line-height: 1.3;
+    color: var(--rv-ink);
+    margin: 0;
+}
+.rv-mode-head p {
+    font-size: 12.5px;
+    color: var(--rv-muted);
+    line-height: 1.55;
+    margin: 4px 0 0;
+}
+.rv-mode-head .rv-mode-side { flex-shrink: 0; display: flex; align-items: center; gap: 10px; }
+
+/* ---------- Judul bagian ---------- */
+.rv-section-head { margin: 34px 0 16px; display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.rv-section-head h2,
+.rv-section-head h3 { font-size: 20px; font-weight: 800; color: var(--rv-ink); margin: 0; display: flex; align-items: center; gap: 10px; }
+.rv-section-head p { font-size: 13px; color: var(--rv-muted); font-weight: 500; margin: 5px 0 0; line-height: 1.5; }
+.rv-section-head .rv-icon-badge {
+    width: 36px; height: 36px; border-radius: 11px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; background: var(--rv-navy);
+    box-shadow: none;
+    flex-shrink: 0;
+}
+
+/* ---------- Kartu ---------- */
+.rv-card {
+    background: var(--rv-card);
+    border: 1px solid var(--rv-line);
+    border-radius: var(--rv-radius);
+    box-shadow: 0 3px 10px rgba(15, 63, 122, .04);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.rv-card:hover { border-color: #BFDBFE; box-shadow: 0 8px 20px rgba(15, 63, 122, .07); }
+
+/* ---------- Tombol audio (konsisten di semua halaman) ---------- */
+.rv-audio {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid #DBEAFE;
+    background: #EFF6FF;
+    color: var(--rv-navy);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+.rv-audio:hover { background: var(--rv-navy); color: #fff; transform: scale(1.07); box-shadow: 0 8px 18px rgba(15, 63, 122, .22); }
+.rv-audio:active { transform: scale(.95); }
+.rv-audio svg { width: 21px; height: 21px; }
+.rv-audio.is-playing {
+    background: var(--rv-gold);
+    border-color: var(--rv-gold);
+    color: #fff;
+    animation: rv-pulse-ring 1.1s infinite;
+}
+.rv-audio.is-playing svg { animation: rv-pop .4s ease; }
+.rv-audio.is-small { width: 36px; height: 36px; }
+.rv-audio.is-small svg { width: 17px; height: 17px; }
+
+/* Gelombang suara dekoratif */
+.rv-soundwave { display: inline-flex; align-items: center; gap: 3px; height: 14px; }
+.rv-soundwave i { width: 3px; height: 100%; border-radius: 2px; background: currentColor; transform-origin: center; }
+.rv-audio.is-playing .rv-soundwave i { animation: rv-wave .7s ease-in-out infinite; }
+.rv-audio.is-playing .rv-soundwave i:nth-child(2) { animation-delay: .12s; }
+.rv-audio.is-playing .rv-soundwave i:nth-child(3) { animation-delay: .24s; }
+.rv-audio.is-playing .rv-soundwave i:nth-child(4) { animation-delay: .36s; }
+
+/* ---------- Pilihan bahasa ---------- */
+.rv-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    background: #EEF2F7;
+    border: 1px solid var(--rv-line);
+    border-radius: 9px;
+}
+.rv-lang button {
+    border: 0;
+    background: transparent;
+    color: var(--rv-muted);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .4px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+.rv-lang button:hover { color: var(--rv-navy); }
+.rv-lang button.is-active {
+    background: var(--rv-navy);
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(15, 63, 122, .18);
+}
+.rv-lang-sidebar { width: 100%; justify-content: center; margin-bottom: 10px; }
+.rv-lang-inline { flex-shrink: 0; }
+.nav-lang { list-style: none; padding: 10px 8px 0; }
+@media (max-width: 768px) {
+    .nav-lang { padding: 8px 0 0; }
+    .nav-lang .rv-lang button { padding: 5px 6px; font-size: 9px; }
+}
+.rv-lang-floating {
+    position: fixed;
+    top: 16px;
+    right: 18px;
+    z-index: 120;
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(15, 63, 122, .12);
+}
+
+/* ---------- Panel / tab ---------- */
+.rv-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.rv-tab {
+    padding: 9px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--rv-line);
+    background: #fff;
+    color: var(--rv-muted);
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .18s;
+}
+.rv-tab:hover { border-color: #93C5FD; color: var(--rv-blue); }
+.rv-tab.is-active { background: var(--rv-navy); border-color: var(--rv-navy); color: #fff; box-shadow: 0 6px 14px rgba(15, 63, 122, .2); }
+
+/* ---------- Responsif ---------- */
+@media (max-width: 900px) {
+    .rv-hero-art { width: 180px; }
+    .rv-hero h1, .rv-hero h2 { font-size: 25px; }
+}
+@media (max-width: 768px) {
+    .rv-hero { padding: 26px 24px; flex-direction: column; align-items: flex-start; }
+    .rv-hero-art { width: 150px; align-self: center; }
+    .rv-hero-art img { max-height: 150px; }
+    .rv-hero h1, .rv-hero h2 { font-size: 23px; }
+    .rv-hero p { font-size: 13.5px; }
+}

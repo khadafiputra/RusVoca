@@ -1,0 +1,19 @@
+# Keamanan dasar untuk web root RusVoca.
+Options -Indexes
+
+# Jangan pernah menyajikan file dump database / konfigurasi / backup.
+<FilesMatch "(?i)\.(sql|sqlite|db|log|md|bak|old|env|ini|sh|bat|ps1)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Blokir akses ke file tersembunyi seperti .git dan .env.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (^|/)\.(git|env) - [F,L]
+</IfModule>

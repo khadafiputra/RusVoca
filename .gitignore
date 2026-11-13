@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# RusVoca - file yang tidak perlu masuk repository
+# ---------------------------------------------------------------------------
+
+# Data runtime: rate limit & log aplikasi
+storage/throttle/*.json
+storage/throttle/*.log
+storage/logs/
+storage/backup/*
+!storage/backup/.htaccess
+
+# File log & error
+*.log
+error_log
+php_errorlog
+
+# Konfigurasi rahasia (jangan pernah di-commit)
+.env
+.env.*
+*.local.php
+config/koneksi.local.php
+
+# Dump database pribadi / hasil ekspor sementara
+*.sql.gz
+*.sql.zip
+database/*.dump.sql
+
+# Berkas sistem operasi
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+._*
+
+# Editor & IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+*.bak
+*.old
+
+# Dependency (jika nanti memakai Composer/NPM)
+/vendor/
+/node_modules/
+
+# Arsip & file sementara
+*.zip
+*.rar
+*.7z
+*.tmp

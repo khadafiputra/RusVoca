@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" fill="none" role="img" aria-label="Ilustrasi buku kosakata bahasa Rusia">
+  <defs>
+    <linearGradient id="bookPage" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E8F0FB"/>
+    </linearGradient>
+    <linearGradient id="bookCover" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1D4ED8"/>
+      <stop offset="1" stop-color="#0F3F7A"/>
+    </linearGradient>
+    <linearGradient id="bubbleGold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lingkaran dekoratif -->
+  <circle cx="70" cy="54" r="42" fill="#fff" opacity=".08"/>
+  <circle cx="342" cy="220" r="56" fill="#fff" opacity=".07"/>
+  <circle cx="330" cy="52" r="6" fill="#FBBF24" opacity=".85"/>
+  <circle cx="300" cy="34" r="3" fill="#FDE68A" opacity=".7"/>
+  <circle cx="98" cy="110" r="3.5" fill="#FDE68A" opacity=".55"/>
+
+  <!-- Buku -->
+  <g>
+    <path d="M58 208c0-8 7-14 15-14h83c8 0 14 6 14 14v34H73c-8 0-15-6-15-14z" fill="url(#bookCover)"/>
+    <path d="M372 208c0-8-7-14-15-14h-83c-8 0-14 6-14 14v34h97c8 0 15-6 15-14z" fill="url(#bookCover)"/>
+    <path d="M170 128c0-7 5-12 12-12h28c7 0 12 5 12 12v120h-52z" fill="#0B2F5E"/>
+    <path d="M70 148c0-13 9-22 22-22h78v112H92c-12 0-22 10-22 22z" fill="url(#bookPage)"/>
+    <path d="M170 148c0-13 9-22 22-22h78c13 0 22 9 22 22v112h-80c-12 0-22 10-22 22z" fill="url(#bookPage)"/>
+    <path d="M170 148v134" stroke="#CBD5E1" stroke-width="3"/>
+    <path d="M70 238c10-8 22-10 34-10h66" stroke="#CBD5E1" stroke-width="2" opacity=".7"/>
+    <path d="M270 238c-10-8-22-10-34-10h-66" stroke="#CBD5E1" stroke-width="2" opacity=".7"/>
+
+    <!-- Baris teks -->
+    <rect x="92" y="150" width="55" height="6" rx="3" fill="#BFDBFE"/>
+    <rect x="92" y="166" width="44" height="6" rx="3" fill="#DBEAFE"/>
+    <rect x="92" y="182" width="52" height="6" rx="3" fill="#DBEAFE"/>
+    <rect x="92" y="198" width="34" height="6" rx="3" fill="#DBEAFE"/>
+    <rect x="192" y="150" width="55" height="6" rx="3" fill="#BFDBFE"/>
+    <rect x="192" y="166" width="48" height="6" rx="3" fill="#DBEAFE"/>
+    <rect x="192" y="182" width="38" height="6" rx="3" fill="#DBEAFE"/>
+    <rect x="192" y="198" width="52" height="6" rx="3" fill="#DBEAFE"/>
+
+    <!-- Huruf menyala -->
+    <text x="118" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="800" fill="#0F3F7A">Аз</text>
+    <text x="222" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="800" fill="#E09B19">бука</text>
+  </g>
+
+  <!-- Gelembung ucapan -->
+  <g>
+    <rect x="34" y="40" width="132" height="54" rx="18" fill="#fff" opacity=".97"/>
+    <path d="M70 94l-4 16 20-16z" fill="#fff" opacity=".97"/>
+    <text x="100" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#0F3F7A">Привет</text>
+    <text x="100" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="600" fill="#64748B">privet · halo</text>
+  </g>
+  <g>
+    <rect x="234" y="80" width="136" height="54" rx="18" fill="url(#bubbleGold)"/>
+    <path d="M330 134l6 16-22-16z" fill="#E09B19"/>
+    <text x="302" y="106" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#3B2500">Спасибо</text>
+    <text x="302" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="600" fill="#7C4A03">spasiba · terima kasih</text>
+  </g>
+
+  <!-- Bintang -->
+  <path d="M352 158l3.6 7.3 8.1 1.2-5.9 5.7 1.4 8-7.2-3.8-7.2 3.8 1.4-8-5.9-5.7 8.1-1.2z" fill="#FBBF24"/>
+</svg>
