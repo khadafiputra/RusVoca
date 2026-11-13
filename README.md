@@ -59,7 +59,7 @@ Tidak perlu Composer, Node.js, atau build step.
 rusvoca/
 ├── admin/                 Halaman admin (dashboard, materi, user, nilai)
 ├── assets/
-│   ├── css/               style.css, auth.css, learn-ui.css
+│   ├── css/               auth.css, learn-ui.css
 │   ├── img/               logo, ilustrasi, background
 │   └── js/                audio.js, sound.js, quiz-guard.js
 ├── config/

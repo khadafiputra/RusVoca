@@ -7,15 +7,6 @@
  * ---------------------------------------------------------------------------
  */
 
-/** Daftar kode mode belajar yang sah (dipakai untuk badge tuntas).
- *  Game Memori & Tic-Tac-Toe sudah dihapus dari alur evaluasi. */
-const MODE_BELAJAR_VALID = [
-    'kuis_kosakata',
-    'kuis_mendengarkan',
-    'mode_speaking',
-    'mode_writing',
-];
-
 /**
  * Target menit harian milik user (10/15/30, default 15).
  *

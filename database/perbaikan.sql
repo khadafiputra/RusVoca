@@ -63,10 +63,11 @@ ALTER TABLE tb_target_harian
 -- BAGIAN C [DISARANKAN] - Perbaikan data
 -- ---------------------------------------------------------------------
 -- 1) Semua akun lama memiliki tanggal_daftar = NULL sehingga profil
---    menampilkan "Bergabung sejak -". Diisi dari created_at.
+--    menampilkan "Bergabung sejak -". Diisi dari tanggal hari ini karena
+--    kolom created_at sudah dihapus dari skema.
 -- =====================================================================
 UPDATE tb_akun
-    SET tanggal_daftar = DATE(created_at)
+    SET tanggal_daftar = CURDATE()
     WHERE tanggal_daftar IS NULL;
 
 -- 2) Samakan penanda "selesai": setiap skor >= 60 (batas lulus) dianggap tuntas.
@@ -76,21 +77,27 @@ UPDATE tb_progres_belajar
 
 
 -- =====================================================================
--- BAGIAN D [OPSIONAL - MENGHAPUS KOLOM] - Bersihkan kolom sisa
+-- BAGIAN D [OPSIONAL - MEMBERSIHKAN KOLOM LAMA] - Database versi lama
 -- ---------------------------------------------------------------------
--- Jalankan hanya jika Anda yakin tidak butuh datanya lagi.
+-- Skema baru dan `rusvoca_install.sql` sudah TIDAK memakai kolom berikut.
+-- Jalankan baris DROP hanya sekali pada database lama yang masih punya
+-- kolom tersebut. Jika kolom sudah tidak ada, lewati bagian ini.
 --
--- 1) tb_akun.target_menit_harian  -> duplikat dari target_waktu
---    (aplikasi memakai `target_waktu`; target_menit_harian tidak dipakai).
---    Perhatikan: default keduanya beda (10 vs 15) dan membingungkan.
+-- 1) tb_akun.target_menit_harian -> duplikat dari target_waktu
+--    (aplikasi memakai `target_waktu`).
+-- 2) tb_akun.created_at -> digantikan tanggal_daftar.
+-- 3) tb_kosakata.file_audio -> audio memakai Web Speech API, bukan file.
 -- =====================================================================
--- ALTER TABLE tb_akun DROP COLUMN target_menit_harian;
+-- ALTER TABLE tb_akun
+--     DROP COLUMN target_menit_harian,
+--     DROP COLUMN created_at;
+-- ALTER TABLE tb_kosakata
+--     DROP COLUMN file_audio;
 
--- 2) PENTING: JANGAN hapus kolom reset_otp & reset_otp_expired.
---    Sejak fitur "Lupa Password" diaktifkan kembali, kedua kolom ini
---    WAJIB ada. Menghapusnya akan membuat permintaan kode reset gagal.
+-- PENTING: JANGAN hapus kolom reset_otp & reset_otp_expired.
+-- Sejak fitur "Lupa Password" diaktifkan kembali, kedua kolom ini
+-- WAJIB ada. Menghapusnya akan membuat permintaan kode reset gagal.
 -- =====================================================================
--- (Baris DROP untuk reset_otp sengaja dihapus dari file ini.)
 
 
 -- =====================================================================

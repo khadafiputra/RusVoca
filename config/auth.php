@@ -46,15 +46,6 @@ function pengguna_admin(mysqli $koneksi): bool
     return role_aktif($koneksi) === 'admin';
 }
 
-/** Redirect ke halaman login bila belum login. */
-function wajib_login(string $login_path = 'login.php'): void
-{
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: $login_path");
-        exit();
-    }
-}
-
 /**
  * Wajib berperan admin. Siswa yang mencoba membuka halaman admin
  * akan dialihkan ke dashboard disertai pesan.
