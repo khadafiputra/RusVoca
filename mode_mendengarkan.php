@@ -109,7 +109,6 @@ $json_kosakata = json_encode($kosakata_array);
         .brand-logo-img { width: 42px; height: 42px; object-fit: contain; }
         .brand-name { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: var(--primary-blue); }
         .brand-name span { color: #E09B19; }
-        .brand-sub { font-size: 9px; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); margin-top: 2px; }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; }
         .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
         .nav-item.active a { background-color: var(--primary-blue); color: #FFFFFF; box-shadow: 0 4px 12px rgba(15, 63, 122, 0.15); }
@@ -182,7 +181,7 @@ $json_kosakata = json_encode($kosakata_array);
     <aside class="sidebar">
         <!-- Sidebar SAMA -->
         <div>
-            <div class="brand-header"><img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img"><div class="brand-text"><div class="brand-name">Rus<span>Voca</span></div><div class="brand-sub"><?= t('APLIKASI KOSAKATA BAHASA RUSIA', 'RUSSIAN VOCABULARY APP') ?></div></div></div>
+            <div class="brand-header"><img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img"><div class="brand-text"><div class="brand-name">Rus<span>Voca</span></div></div></div>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="dashboard.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span><?= t('Dashboard', 'Dashboard') ?></span></a></li>
                 <li class="nav-item"><a href="alfabet.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h9v2zm0-4H9V5h9v2z"/></svg><span><?= t('Belajar Alfabet', 'Learn the Alphabet') ?></span></a></li>
@@ -420,6 +419,6 @@ $json_kosakata = json_encode($kosakata_array);
 </script>
 
 <script src="assets/js/sound.js"></script>
-<script src="assets/js/quiz-guard.js?v=20261113"></script>
+<script src="assets/js/quiz-guard.js?v=20261108"></script>
 </body>
 </html>

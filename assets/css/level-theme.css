@@ -1,0 +1,153 @@
+/* ==========================================================================
+   RusVoca - Tema Tingkat Keahlian
+   --------------------------------------------------------------------------
+   Setiap tingkat punya nuansa yang berbeda tetapi tetap tenang:
+   - Pemula   : kertas hangat + pola titik perunggu
+   - Menengah : abu-biru sejuk + garis diagonal perak
+   - Mahir    : krem keemasan + glow emas lembut
+   - Legenda  : biru malam + aurora tipis yang bergerak perlahan
+
+   File ini hanya mengubah warna, pola, dan bayangan. Tata letak, ukuran
+   teks, dan kontras utama tidak diubah agar tetap nyaman dibaca.
+   ========================================================================== */
+
+body[class*="level-"] {
+    transition: background-color .45s ease;
+}
+
+/* ---------- PEMULA ---------- */
+body.level-pemula {
+    --lv-accent: #B45309;
+    --lv-accent-2: #C98A3C;
+    background-color: #FAF7F1;
+}
+body.level-pemula .rv-hero {
+    background-color: #0B2F5E;
+    background-image:
+        radial-gradient(rgba(255, 255, 255, .10) 1px, transparent 1px),
+        linear-gradient(135deg, #0B2F5E 0%, #16457A 100%);
+    background-size: 18px 18px, 100% 100%;
+    border-bottom-color: #C98A3C;
+}
+body.level-pemula .rv-eyebrow,
+body.level-pemula .rv-eyebrow .dot { color: #E9BE7A; }
+body.level-pemula .rv-eyebrow .dot { background: #C98A3C; }
+body.level-pemula .card-ui { border-top: 3px solid #D9A35F; }
+body.level-pemula .lesson-card:not(.locked) { border-top: 3px solid #D9A35F; }
+body.level-pemula .lesson-card:not(.locked):hover {
+    border-color: #C98A3C;
+    box-shadow: 0 14px 26px rgba(180, 83, 9, .14);
+}
+
+/* ---------- MENENGAH ---------- */
+body.level-menengah {
+    --lv-accent: #64748B;
+    --lv-accent-2: #94A3B8;
+    background-color: #F1F4F8;
+}
+body.level-menengah .rv-hero {
+    background-color: #0B2F5E;
+    background-image:
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, .055) 0 2px, transparent 2px 14px),
+        linear-gradient(135deg, #0B2F5E 0%, #2B4A6B 100%);
+    border-bottom-color: #A7B6C6;
+}
+body.level-menengah .rv-eyebrow,
+body.level-menengah .rv-eyebrow .dot { color: #C7D5E3; }
+body.level-menengah .rv-eyebrow .dot { background: #A7B6C6; }
+body.level-menengah .card-ui { border-top: 3px solid #9AAABD; }
+body.level-menengah .lesson-card:not(.locked) { border-top: 3px solid #9AAABD; }
+body.level-menengah .lesson-card:not(.locked):hover {
+    border-color: #7C8EA3;
+    box-shadow: 0 14px 26px rgba(71, 85, 105, .15);
+}
+
+/* ---------- MAHIR ---------- */
+body.level-mahir {
+    --lv-accent: #D97706;
+    --lv-accent-2: #E0A21A;
+    background-color: #FBF7EE;
+}
+body.level-mahir .rv-hero {
+    background-color: #0B2F5E;
+    background-image:
+        radial-gradient(120% 140% at 82% 0%, rgba(245, 183, 49, .36), transparent 58%),
+        radial-gradient(80% 120% at 0% 100%, rgba(224, 155, 25, .18), transparent 60%),
+        linear-gradient(135deg, #0B2F5E 0%, #143C6E 100%);
+    border-bottom-color: #E0A21A;
+    box-shadow: 0 14px 32px rgba(224, 155, 25, .18);
+}
+body.level-mahir .rv-hero::after {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -50px;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(251, 191, 36, .20), transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+body.level-mahir .rv-eyebrow,
+body.level-mahir .rv-eyebrow .dot { color: #F6D27E; }
+body.level-mahir .rv-eyebrow .dot { background: #E0A21A; }
+body.level-mahir .card-ui { border-top: 3px solid #E0A21A; }
+body.level-mahir .lesson-card:not(.locked) { border-top: 3px solid #E0A21A; }
+body.level-mahir .lesson-card:not(.locked):hover {
+    border-color: #D97706;
+    box-shadow: 0 16px 30px rgba(217, 119, 6, .18);
+}
+body.level-mahir .grade-card:hover {
+    border-color: #D97706;
+    box-shadow: 0 12px 24px rgba(217, 119, 6, .16);
+}
+
+/* ---------- LEGENDA ---------- */
+body.level-legenda {
+    --lv-accent: #2563EB;
+    --lv-accent-2: #38BDF8;
+    background-color: #EDF3FC;
+}
+body.level-legenda .rv-hero {
+    background-color: #061C38;
+    background-image:
+        radial-gradient(120% 120% at 85% 10%, rgba(6, 182, 212, .34), transparent 55%),
+        radial-gradient(120% 120% at 8% 95%, rgba(139, 92, 246, .28), transparent 58%),
+        linear-gradient(135deg, #061C38 0%, #0E3565 100%);
+    border-bottom-color: #38BDF8;
+    box-shadow: 0 16px 38px rgba(37, 99, 235, .22);
+}
+body.level-legenda .rv-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, .10) 48%, transparent 60%);
+    background-size: 220% 100%;
+    animation: rv-legenda-sheen 9s ease-in-out infinite;
+}
+@keyframes rv-legenda-sheen {
+    0%, 100% { background-position: 120% 0; }
+    50%      { background-position: -20% 0; }
+}
+body.level-legenda .rv-eyebrow,
+body.level-legenda .rv-eyebrow .dot { color: #9BE7FF; }
+body.level-legenda .rv-eyebrow .dot { background: #38BDF8; }
+body.level-legenda .card-ui { border-top: 3px solid #3B82F6; }
+body.level-legenda .lesson-card:not(.locked) { border-top: 3px solid #3B82F6; }
+body.level-legenda .lesson-card:not(.locked):hover {
+    border-color: #2563EB;
+    box-shadow: 0 16px 34px rgba(37, 99, 235, .20);
+}
+body.level-legenda .grade-card:hover {
+    border-color: #2563EB;
+    box-shadow: 0 12px 26px rgba(37, 99, 235, .20);
+}
+
+/* Hormati preferensi pengguna yang tidak ingin animasi. */
+@media (prefers-reduced-motion: reduce) {
+    body.level-legenda .rv-hero::after { animation: none; }
+    body[class*="level-"] { transition: none; }
+}

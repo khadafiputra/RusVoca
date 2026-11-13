@@ -3,6 +3,7 @@ session_start();
 require_once 'config/koneksi.php';
 require_once 'config/auth.php';
 require_once 'config/bahasa.php';
+require_once 'config/level.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -18,54 +19,16 @@ $pesan_akses = $_SESSION['error_akses'] ?? '';
 unset($_SESSION['error_akses']);
 
 // ===================================================================
-// SISTEM GRADE / TINGKATAN KEAHLIAN (Menghitung Total XP Terbaik)
+// SISTEM GRADE / TINGKATAN KEAHLIAN (helper bersama config/level.php)
 // ===================================================================
-$query_xp = mysqli_query($koneksi, "
-    SELECT SUM(max_skor) as total_xp FROM (
-        SELECT MAX(skor) as max_skor 
-        FROM tb_progres_belajar 
-        WHERE user_id = '$user_id' 
-        GROUP BY id_pelajaran, mode_belajar
-    ) as subquery
-");
-$total_xp = 0;
-if ($query_xp) {
-    $data_xp = mysqli_fetch_assoc($query_xp);
-    $total_xp = isset($data_xp['total_xp']) && $data_xp['total_xp'] !== null ? (int)$data_xp['total_xp'] : 0;
-}
-
-// Admin memiliki akses penuh: tampilkan tingkatan maksimal (Legenda).
-if ($is_admin) {
-    $total_xp = max($total_xp, 3000);
-}
-
-// Logika Penentuan Grade & Ikon SVG
-$grade_name = "Pemula";
-$grade_color = "#B45309"; // Perunggu (Bronze)
-$grade_icon = '<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-$next_xp = 500;
-$persen_grade = ($total_xp / $next_xp) * 100;
-
-if ($total_xp >= 3000) {
-    $grade_name = "Legenda";
-    $grade_color = "#2563EB"; // Berlian Biru (Diamond)
-    $grade_icon = '<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 9l10 13 10-13z"/></svg>';
-    $next_xp = $total_xp; // Maksimal
-    $persen_grade = 100;
-} elseif ($total_xp >= 1500) {
-    $grade_name = "Mahir";
-    $grade_color = "#D97706"; // Emas (Gold)
-    $grade_icon = '<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16h14v2H5zm14-9l-4 3-3-5-3 5-4-3 2 8h10l2-8z"/></svg>';
-    $next_xp = 3000;
-    $persen_grade = (($total_xp - 1500) / 1500) * 100;
-} elseif ($total_xp >= 500) {
-    $grade_name = "Menengah";
-    $grade_color = "#64748B"; // Perak (Silver)
-    $grade_icon = '<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-9-4z"/></svg>';
-    $next_xp = 1500;
-    $persen_grade = (($total_xp - 500) / 1000) * 100;
-}
-$persen_grade = min(100, max(0, $persen_grade));
+$level        = hitung_level($koneksi, $user_id, $is_admin);
+$total_xp     = $level['xp'];
+$grade_name   = $level['nama'];
+$grade_color  = $level['warna'];
+$next_xp      = $level['next_xp'];
+$persen_grade = $level['persen'];
+$level_kelas  = $level['kelas'];
+$grade_icon   = '<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="' . $level['ikon'] . '"/></svg>';
 
 // ===================================================================
 // FUNGSI PENGHITUNG WAKTU memakai helper bersama di config/bahasa.php
@@ -114,6 +77,7 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
     <link rel="icon" type="image/png" href="assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/learn-ui.css?v=20261108">
+    <link rel="stylesheet" href="assets/css/level-theme.css?v=20261113">
     
     <style>
         :root { --primary-blue: #0F3F7A; --primary-hover: #0a2d59; --bg-light: #F4F7FA; --border-color: #E2E8F0; --text-dark: #0F172A; --text-muted: #64748B; --card-bg: #FFFFFF; --accent-green: #10B981; --accent-blue: #2563EB; --accent-red: #EF4444; }
@@ -229,7 +193,7 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
         }
     </style>
 </head>
-<body>
+<body class="<?= htmlspecialchars($level_kelas) ?>">
 
 <div class="app-layout">
     <!-- Sidebar -->
@@ -239,7 +203,7 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
                 <img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img">
                 <div class="brand-text">
                     <div class="brand-name">Rus<span>Voca</span></div>
-                    <div class="brand-sub"><?= t('APLIKASI KOSAKATA BAHASA RUSIA', 'RUSSIAN VOCABULARY APP') ?></div>
+                    <div class="brand-sub">RUSSIAN VOCABULARY APP</div>
                 </div>
             </div>
 

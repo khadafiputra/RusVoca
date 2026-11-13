@@ -1,7 +1,9 @@
 <?php
 session_start();
 require_once 'config/koneksi.php';
+require_once 'config/auth.php';
 require_once 'config/bahasa.php';
+require_once 'config/level.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -9,6 +11,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $nama_user = $_SESSION['nama'] ?? 'Siswa';
+$user_id   = (int)($_SESSION['user_id'] ?? 0);
+
+// Tingkat keahlian untuk tema halaman.
+$is_admin    = pengguna_admin($koneksi);
+$level       = hitung_level($koneksi, $user_id, $is_admin);
+$level_kelas = $level['kelas'];
 
 // ==========================================================================
 // DATA ALFABET
@@ -253,6 +261,7 @@ $latihan_baca = [
     <link rel="icon" type="image/png" href="assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/learn-ui.css?v=20261108">
+    <link rel="stylesheet" href="assets/css/level-theme.css?v=20261113">
     
     <style>
         :root {
@@ -504,7 +513,7 @@ $latihan_baca = [
         }
     </style>
 </head>
-<body>
+<body class="<?= htmlspecialchars($level_kelas) ?>">
 
 <div class="app-layout">
     <!-- Sidebar -->
@@ -514,7 +523,7 @@ $latihan_baca = [
                 <img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img">
                 <div class="brand-text">
                     <div class="brand-name">Rus<span>Voca</span></div>
-                    <div class="brand-sub"><?= t('APLIKASI KOSAKATA BAHASA RUSIA', 'RUSSIAN VOCABULARY APP') ?></div>
+                    <div class="brand-sub">RUSSIAN VOCABULARY APP</div>
                 </div>
             </div>
             <ul class="nav-menu">

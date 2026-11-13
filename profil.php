@@ -3,6 +3,7 @@ session_start();
 require_once 'config/koneksi.php';
 require_once 'config/auth.php';
 require_once 'config/bahasa.php';
+require_once 'config/level.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -103,25 +104,13 @@ $query_user = mysqli_query($koneksi, "SELECT * FROM tb_akun WHERE id = '$user_id
 $data_user = ($query_user) ? mysqli_fetch_assoc($query_user) : null;
 if (!$data_user) { $data_user = ['nama' => $nama_user, 'email' => '', 'target_waktu' => 15, 'tanggal_daftar' => null]; }
 
-// Menghitung Total XP
-$total_xp = 0;
-$query_xp = mysqli_query($koneksi, "SELECT SUM(max_skor) as total_xp FROM (SELECT MAX(skor) as max_skor FROM tb_progres_belajar WHERE user_id = '$user_id' GROUP BY id_pelajaran, mode_belajar) as sub");
-if ($query_xp) {
-    $data_xp = mysqli_fetch_assoc($query_xp);
-    $total_xp = isset($data_xp['total_xp']) && $data_xp['total_xp'] !== null ? (int)$data_xp['total_xp'] : 0;
-}
-
-// Admin memiliki akses penuh: tampilkan tingkatan maksimal (Legenda).
-if ($is_admin) {
-    $total_xp = max($total_xp, 3000);
-}
-
-// Logika Grade/Rank
-$grade_name = "Pemula"; $grade_color = "#B45309"; 
-$grade_icon = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-if ($total_xp >= 3000) { $grade_name = "Legenda"; $grade_color = "#2563EB"; $grade_icon = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 9l10 13 10-13z"/></svg>'; } 
-elseif ($total_xp >= 1500) { $grade_name = "Mahir"; $grade_color = "#D97706"; $grade_icon = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16h14v2H5zm14-9l-4 3-3-5-3 5-4-3 2 8h10l2-8z"/></svg>'; } 
-elseif ($total_xp >= 500) { $grade_name = "Menengah"; $grade_color = "#64748B"; $grade_icon = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-9-4z"/></svg>'; }
+// Menghitung Total XP & tingkat keahlian (helper bersama config/level.php)
+$level       = hitung_level($koneksi, $user_id, $is_admin);
+$total_xp    = $level['xp'];
+$grade_name  = $level['nama'];
+$grade_color = $level['warna'];
+$level_kelas = $level['kelas'];
+$grade_icon  = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="' . $level['ikon'] . '"/></svg>';
 
 // Menghitung Jumlah Bab Selesai (Tuntas 4 Latihan)
 $bab_tuntas = 0;
@@ -149,6 +138,7 @@ $tanggal_daftar = !empty($data_user['tanggal_daftar']) ? format_tanggal($data_us
     <link rel="icon" type="image/png" href="assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/learn-ui.css?v=20261108">
+    <link rel="stylesheet" href="assets/css/level-theme.css?v=20261113">
     
     <style>
         :root { --primary-blue: #0F3F7A; --primary-hover: #0a2d59; --bg-light: #F4F7FA; --border-color: #E2E8F0; --text-dark: #0F172A; --text-muted: #64748B; --card-bg: #FFFFFF; --accent-blue: #2563EB; --accent-green: #10B981; --accent-red: #EF4444; }
@@ -241,13 +231,13 @@ $tanggal_daftar = !empty($data_user['tanggal_daftar']) ? format_tanggal($data_us
         }
     </style>
 </head>
-<body>
+<body class="<?= htmlspecialchars($level_kelas) ?>">
 
 <div class="app-layout">
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div>
-            <div class="brand-header"><img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img"><div class="brand-text"><div class="brand-name">Rus<span>Voca</span></div><div class="brand-sub"><?= t('APLIKASI KOSAKATA BAHASA RUSIA', 'RUSSIAN VOCABULARY APP') ?></div></div></div>
+            <div class="brand-header"><img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img"><div class="brand-text"><div class="brand-name">Rus<span>Voca</span></div><div class="brand-sub">RUSSIAN VOCABULARY APP</div></div></div>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="dashboard.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span><?= t('Dashboard', 'Dashboard') ?></span></a></li>
                 <li class="nav-item"><a href="alfabet.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h9v2zm0-4H9V5h9v2z"/></svg><span><?= t('Belajar Alfabet', 'Learn the Alphabet') ?></span></a></li>

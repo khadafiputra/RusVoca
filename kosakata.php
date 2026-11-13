@@ -3,6 +3,7 @@ session_start();
 require_once 'config/koneksi.php';
 require_once 'config/auth.php';
 require_once 'config/bahasa.php';
+require_once 'config/level.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -12,6 +13,10 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = (int)($_SESSION['user_id'] ?? 0);
 $nama_user = $_SESSION['nama'] ?? 'Siswa';
 $is_admin = pengguna_admin($koneksi);
+
+// Tingkat keahlian untuk tema halaman.
+$level       = hitung_level($koneksi, $user_id, $is_admin);
+$level_kelas = $level['kelas'];
 
 // =========================================================================================
 // LOGIKA SISTEM LEVEL (UNLOCK):
@@ -44,6 +49,24 @@ if ($is_admin) {
 }
 // =========================================================================================
 
+// Daftar bab yang sudah TUNTAS: keempat latihan lulus dengan skor minimal 60.
+// Dipakai untuk menampilkan tanda "Tuntas" pada kartu bab.
+$bab_tuntas = [];
+$query_bab_tuntas = mysqli_query($koneksi, "
+    SELECT id_pelajaran
+    FROM tb_progres_belajar
+    WHERE user_id = '$user_id'
+      AND skor >= 60
+      AND mode_belajar IN ('kuis_kosakata', 'kuis_mendengarkan', 'mode_speaking', 'mode_writing')
+    GROUP BY id_pelajaran
+    HAVING COUNT(DISTINCT mode_belajar) = 4
+");
+if ($query_bab_tuntas) {
+    while ($baris_tuntas = mysqli_fetch_assoc($query_bab_tuntas)) {
+        $bab_tuntas[(int)$baris_tuntas['id_pelajaran']] = true;
+    }
+}
+
 // Mengambil semua data pelajaran dari tb_pelajaran beserta jumlah kosakatanya
 $query_pelajaran = mysqli_query($koneksi, "
     SELECT p.*, (
@@ -73,6 +96,7 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
     <link rel="icon" type="image/png" href="assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/learn-ui.css?v=20261108">
+    <link rel="stylesheet" href="assets/css/level-theme.css?v=20261113">
     
     <style>
         :root {
@@ -122,6 +146,9 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
             gap: 16px; transition: all 0.2s ease-in-out; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         .lesson-card:hover { transform: translateY(-4px); border-color: var(--primary-blue); box-shadow: 0 14px 26px rgba(15, 63, 122, 0.12); }
+        .lesson-card.is-done { border-left: 4px solid #10B981; }
+        .lesson-card.is-done .lesson-title { color: #065F46; }
+        .lesson-card.is-done:hover { border-color: #10B981; }
         .lesson-main { display: flex; align-items: center; gap: 15px; flex: 1; min-width: 0; }
         .lesson-thumb {
             width: 56px; height: 56px; border-radius: 15px; flex-shrink: 0;
@@ -164,7 +191,7 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
         }
     </style>
 </head>
-<body>
+<body class="<?= htmlspecialchars($level_kelas) ?>">
 
 <div class="app-layout">
     <aside class="sidebar">
@@ -173,7 +200,7 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
                 <img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img">
                 <div class="brand-text">
                     <div class="brand-name">Rus<span>Voca</span></div>
-                    <div class="brand-sub"><?= t('APLIKASI KOSAKATA BAHASA RUSIA', 'RUSSIAN VOCABULARY APP') ?></div>
+                    <div class="brand-sub">RUSSIAN VOCABULARY APP</div>
                 </div>
             </div>
             
@@ -253,7 +280,8 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
                         </div>
                     <?php else: ?>
                         <!-- KARTU TERBUKA -->
-                        <a href="detail_pelajaran.php?id=<?= $row['id_pelajaran'] ?>" class="lesson-card rv-rise">
+                        <?php $is_tuntas_bab = !empty($bab_tuntas[(int)$row['id_pelajaran']]); ?>
+                        <a href="detail_pelajaran.php?id=<?= $row['id_pelajaran'] ?>" class="lesson-card rv-rise <?= $is_tuntas_bab ? 'is-done' : '' ?>">
                             <div class="lesson-main">
                                 <div class="lesson-thumb" style="background: <?= $gaya_bab ?>;"><?= $huruf_thumb ?></div>
                                 <div class="lesson-info">
@@ -261,6 +289,12 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
                                     <h3 class="lesson-title"><?= htmlspecialchars(materi_t($row['judul_pelajaran'])) ?></h3>
                                     <div class="lesson-meta">
                                         <span class="rv-chip"><?= (int)$row['jumlah_kata'] ?> <?= t('kata', 'words') ?></span>
+                                        <?php if ($is_tuntas_bab): ?>
+                                            <span class="rv-chip is-green">
+                                                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                                <?= t('Tuntas', 'Completed') ?>
+                                            </span>
+                                        <?php endif; ?>
                                         <?php if (trim((string)($row['materi'] ?? '')) !== ''): ?><span class="rv-chip is-gold"><?= t('Materi', 'Material') ?></span><?php endif; ?>
                                     </div>
                                 </div>
