@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'config/koneksi.php';
+require_once 'config/auth.php';
 require_once 'config/bahasa.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -9,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = (int)($_SESSION['user_id'] ?? 0);
+$is_admin = pengguna_admin($koneksi);
 
 // =====================================================================================
 // [SISTEM OTOMATIS] MENAMBAHKAN KOLOM DATABASE JIKA BELUM ADA (AGAR TIDAK ERROR)
@@ -109,6 +111,11 @@ if ($query_xp) {
     $total_xp = isset($data_xp['total_xp']) && $data_xp['total_xp'] !== null ? (int)$data_xp['total_xp'] : 0;
 }
 
+// Admin memiliki akses penuh: tampilkan tingkatan maksimal (Legenda).
+if ($is_admin) {
+    $total_xp = max($total_xp, 3000);
+}
+
 // Logika Grade/Rank
 $grade_name = "Pemula"; $grade_color = "#B45309"; 
 $grade_icon = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
@@ -120,6 +127,15 @@ elseif ($total_xp >= 500) { $grade_name = "Menengah"; $grade_color = "#64748B"; 
 $bab_tuntas = 0;
 $q_tuntas = mysqli_query($koneksi, "SELECT id_pelajaran FROM tb_progres_belajar WHERE user_id = '$user_id' AND skor >= 60 AND mode_belajar IN ('kuis_kosakata', 'kuis_mendengarkan', 'mode_speaking', 'mode_writing') GROUP BY id_pelajaran HAVING COUNT(DISTINCT mode_belajar) = 4");
 if ($q_tuntas) { $bab_tuntas = mysqli_num_rows($q_tuntas); }
+
+// Admin memiliki akses penuh: anggap semua bab sudah tuntas.
+if ($is_admin) {
+    $q_total_bab = mysqli_query($koneksi, "SELECT COUNT(*) AS jml FROM tb_pelajaran");
+    if ($q_total_bab) {
+        $d_total_bab = mysqli_fetch_assoc($q_total_bab);
+        $bab_tuntas = (int)($d_total_bab['jml'] ?? 0);
+    }
+}
 
 $tanggal_daftar = !empty($data_user['tanggal_daftar']) ? format_tanggal($data_user['tanggal_daftar']) : "-";
 ?>

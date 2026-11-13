@@ -34,6 +34,11 @@ if ($query_xp) {
     $total_xp = isset($data_xp['total_xp']) && $data_xp['total_xp'] !== null ? (int)$data_xp['total_xp'] : 0;
 }
 
+// Admin memiliki akses penuh: tampilkan tingkatan maksimal (Legenda).
+if ($is_admin) {
+    $total_xp = max($total_xp, 3000);
+}
+
 // Logika Penentuan Grade & Ikon SVG
 $grade_name = "Pemula";
 $grade_color = "#B45309"; // Perunggu (Bronze)
@@ -105,7 +110,7 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= t('Dashboard Siswa', 'Student Dashboard') ?> - RusVoca</title>
+    <title><?= $is_admin ? t('Dashboard Admin', 'Admin Dashboard') : t('Dashboard Siswa', 'Student Dashboard') ?> - RusVoca</title>
     <link rel="icon" type="image/png" href="assets/img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/learn-ui.css?v=20261108">
@@ -278,9 +283,9 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
         <?php endif; ?>
         <div class="rv-hero rv-rise">
             <div class="rv-hero-copy">
-                <span class="rv-eyebrow"><span class="dot"></span> <?= t('Dashboard siswa', 'Student dashboard') ?></span>
+                <span class="rv-eyebrow"><span class="dot"></span> <?= $is_admin ? t('Dashboard admin', 'Admin dashboard') : t('Dashboard siswa', 'Student dashboard') ?></span>
                 <h1>Привет, <?= htmlspecialchars($nama_depan) ?>! <span class="hl"><?= t('Siap belajar?', 'Ready to learn?') ?></span></h1>
-                <p><?= t('Lanjutkan perjalananmu menguasai bahasa Rusia. Setiap latihan menambah XP dan membuka bab baru.', 'Continue your journey to master Russian. Every practice session earns XP and unlocks new chapters.') ?></p>
+                <p><?php if ($is_admin): ?><?= t('Mode admin aktif: semua bab dan latihan terbuka, dan tingkatan ditampilkan maksimal.', 'Admin mode active: all chapters and practices are unlocked, and your level is shown at maximum.') ?><?php else: ?><?= t('Lanjutkan perjalananmu menguasai bahasa Rusia. Setiap latihan menambah XP dan membuka bab baru.', 'Continue your journey to master Russian. Every practice session earns XP and unlocks new chapters.') ?><?php endif; ?></p>
                 <div class="rv-hero-actions">
                     <a href="kosakata.php" class="rv-btn rv-btn-gold"><?= t('Lanjutkan Belajar', 'Continue Learning') ?></a>
                     <a href="alfabet.php" class="rv-btn rv-btn-light"><?= t('Belajar Alfabet', 'Learn the Alphabet') ?></a>

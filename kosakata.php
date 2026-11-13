@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'config/koneksi.php';
+require_once 'config/auth.php';
 require_once 'config/bahasa.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -10,30 +11,36 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = (int)($_SESSION['user_id'] ?? 0);
 $nama_user = $_SESSION['nama'] ?? 'Siswa';
+$is_admin = pengguna_admin($koneksi);
 
 // =========================================================================================
 // LOGIKA SISTEM LEVEL (UNLOCK):
 // Cari nomor pelajaran tertinggi di mana KEEMPAT latihannya sudah LULUS (skor >= 60).
 // Mode Game Memori & Tic-Tac-Toe sudah dihapus.
+// Admin memiliki akses penuh: semua bab langsung terbuka.
 // (Disamakan dengan syarat tuntas di detail_pelajaran.php & profil.php)
 // =========================================================================================
 $pelajaran_terbuka_maks = 1;
-$query_max = mysqli_query($koneksi, "
-    SELECT MAX(p.nomor_pelajaran) as max_nomor 
-    FROM tb_pelajaran p 
-    WHERE (
-        SELECT COUNT(DISTINCT pb.mode_belajar) 
-        FROM tb_progres_belajar pb 
-        WHERE pb.id_pelajaran = p.id_pelajaran 
-        AND pb.user_id = '$user_id' 
-        AND pb.skor >= 60 
-        AND pb.mode_belajar IN ('kuis_kosakata', 'kuis_mendengarkan', 'mode_speaking', 'mode_writing')
-    ) = 4
-");
-if ($query_max) {
-    $data_max = mysqli_fetch_assoc($query_max);
-    // Pelajaran yang TERBUKA adalah Bab yang sudah lulus 4 LATIHAN DITAMBAH 1 bab ke depannya.
-    $pelajaran_terbuka_maks = (isset($data_max['max_nomor']) && $data_max['max_nomor'] !== null) ? ((int)$data_max['max_nomor'] + 1) : 1;
+if ($is_admin) {
+    $pelajaran_terbuka_maks = PHP_INT_MAX;
+} else {
+    $query_max = mysqli_query($koneksi, "
+        SELECT MAX(p.nomor_pelajaran) as max_nomor 
+        FROM tb_pelajaran p 
+        WHERE (
+            SELECT COUNT(DISTINCT pb.mode_belajar) 
+            FROM tb_progres_belajar pb 
+            WHERE pb.id_pelajaran = p.id_pelajaran 
+            AND pb.user_id = '$user_id' 
+            AND pb.skor >= 60 
+            AND pb.mode_belajar IN ('kuis_kosakata', 'kuis_mendengarkan', 'mode_speaking', 'mode_writing')
+        ) = 4
+    ");
+    if ($query_max) {
+        $data_max = mysqli_fetch_assoc($query_max);
+        // Pelajaran yang TERBUKA adalah Bab yang sudah lulus 4 LATIHAN DITAMBAH 1 bab ke depannya.
+        $pelajaran_terbuka_maks = (isset($data_max['max_nomor']) && $data_max['max_nomor'] !== null) ? ((int)$data_max['max_nomor'] + 1) : 1;
+    }
 }
 // =========================================================================================
 
@@ -200,7 +207,7 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
             <div class="rv-hero-copy">
                 <span class="rv-eyebrow"><span class="dot"></span> <?= t('Jalur belajar', 'Learning path') ?></span>
                 <h1><?= t('Pelajaran', 'Russian') ?> <span class="hl"><?= t('Bahasa Rusia', 'Language Lessons') ?></span> <?= t('Bertahap', 'Step by Step') ?></h1>
-                <p><?= t('Selesaikan', 'Complete') ?> <b><?= t('keempat latihan', 'all four practices') ?></b> <?= t('(Kuis Kosa Kata, Kuis Audio, Speaking, dan Writing) dengan nilai minimal 60 untuk membuka gembok pada materi selanjutnya.', '(Vocabulary Quiz, Listening Quiz, Speaking, and Writing) with a minimum score of 60 to unlock the next material.') ?></p>
+                <p><?php if ($is_admin): ?><?= t('Mode admin aktif: semua bab terbuka tanpa syarat skor.', 'Admin mode active: all chapters are unlocked without score requirements.') ?><?php else: ?><?= t('Selesaikan', 'Complete') ?> <b><?= t('keempat latihan', 'all four practices') ?></b> <?= t('(Kuis Kosa Kata, Kuis Audio, Speaking, dan Writing) dengan nilai minimal 60 untuk membuka gembok pada materi selanjutnya.', '(Vocabulary Quiz, Listening Quiz, Speaking, and Writing) with a minimum score of 60 to unlock the next material.') ?><?php endif; ?></p>
                 <div class="rv-hero-stats">
                     <div class="rv-stat"><b>4</b><span><?= t('Latihan per bab', 'Practices per chapter') ?></span></div>
                     <div class="rv-stat"><b>33</b><span><?= t('Huruf Kiril', 'Cyrillic letters') ?></span></div>

@@ -37,6 +37,8 @@ materi tetap memakai teks sumbernya.
 - **Kelola materi** - tambah, ubah, hapus pelajaran dan kosakata.
 - **Kelola pengguna** - lihat akun, ubah role, hapus akun.
 - **Rekap nilai** - rekap skor per siswa dan per mode.
+- **Akses penuh** - akun admin otomatis melihat semua bab terbuka dan
+  tingkatan keahlian maksimal (Legenda) tanpa perlu mengerjakan latihan.
 
 ---
 
