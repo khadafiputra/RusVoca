@@ -143,7 +143,7 @@ if ($query_kosakata) {
 
         /* Papan susun huruf */
         .susunan-box { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; min-height: 82px; margin-bottom: 12px; padding: 14px; background: var(--bg-light); border: 2px dashed var(--border-color); border-radius: 14px; transition: .2s; }
-        .susunan-box.kosong::after { content: "Ketuk huruf di bawah untuk menyusun jawaban..."; font-size: 13px; color: #94A3B8; font-weight: 600; }
+        .susunan-box.kosong::after { content: attr(data-kosong); font-size: 13px; color: #94A3B8; font-weight: 600; }
         .susunan-box.jawaban-benar { border-color: var(--accent-green); border-style: solid; background: #ECFDF5; }
         .susunan-box.jawaban-salah { border-color: var(--accent-red); border-style: solid; background: #FEF2F2; animation: rv-shake .4s ease; }
         @keyframes rv-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
@@ -210,7 +210,7 @@ if ($query_kosakata) {
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div>
-            <div class="brand-header"><img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img"><div class="brand-text"><div class="brand-name">Rus<span>Voca</span></div><div class="brand-sub">RUSSIAN VOCABULARY APP</div></div></div>
+            <div class="brand-header"><img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img"><div class="brand-text"><div class="brand-name">Rus<span>Voca</span></div><div class="brand-sub"><?= t('APLIKASI KOSAKATA BAHASA RUSIA', 'RUSSIAN VOCABULARY APP') ?></div></div></div>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="dashboard.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span><?= t('Dashboard', 'Dashboard') ?></span></a></li>
                 <li class="nav-item"><a href="alfabet.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h9v2zm0-4H9V5h9v2z"/></svg><span><?= t('Belajar Alfabet', 'Learn the Alphabet') ?></span></a></li>
@@ -258,7 +258,7 @@ if ($query_kosakata) {
             <div class="word-baca" id="teks-baca"><?= t('Cara baca', 'Read as') ?>: <b>...</b></div>
             <div class="word-note" id="teks-catatan"></div>
 
-            <div class="susunan-box kosong" id="susunan-jawaban"></div>
+            <div class="susunan-box kosong" id="susunan-jawaban" data-kosong="<?= t('Ketuk huruf di bawah untuk menyusun jawaban...', 'Tap the letters below to build the answer...') ?>"></div>
             <div class="bank-huruf" id="bank-huruf"></div>
             <div class="koreksi-text" id="teks-koreksi"></div>
 
@@ -654,6 +654,6 @@ if ($query_kosakata) {
     }
 </script>
 <script src="assets/js/sound.js"></script>
-<script src="assets/js/quiz-guard.js?v=20261108"></script>
+<script src="assets/js/quiz-guard.js?v=20261113"></script>
 </body>
 </html>

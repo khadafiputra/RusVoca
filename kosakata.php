@@ -173,7 +173,7 @@ $huruf_bab = ['П', 'Д', 'С', 'Т', 'Ж'];
                 <img src="assets/img/logo.png" alt="Logo RusVoca" class="brand-logo-img">
                 <div class="brand-text">
                     <div class="brand-name">Rus<span>Voca</span></div>
-                    <div class="brand-sub">RUSSIAN VOCABULARY APP</div>
+                    <div class="brand-sub"><?= t('APLIKASI KOSAKATA BAHASA RUSIA', 'RUSSIAN VOCABULARY APP') ?></div>
                 </div>
             </div>
             

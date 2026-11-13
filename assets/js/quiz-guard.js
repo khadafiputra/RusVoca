@@ -25,6 +25,12 @@
         }
     });
 
+    // Ganti bahasa bukan "keluar kuis". Tanpa ini, peringatan beforeunload
+    // memblokir tombol ID/EN sehingga halaman tidak ikut berganti bahasa.
+    document.querySelectorAll('form.rv-lang').forEach(function (f) {
+        f.addEventListener('submit', tandaiSelesai);
+    });
+
     const PESAN = document.documentElement.lang === 'en'
         ? 'Are you sure you want to leave this quiz? Unsaved progress will be lost.'
         : 'Apakah Anda yakin keluar dari kuis ini? Progres yang belum disimpan akan hilang.';
