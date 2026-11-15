@@ -109,45 +109,6 @@ if ($csrf_ok && isset($_POST['aksi_hapus_kosakata'])) {
     header("Location: kelola_materi.php");
     exit();
 }
-// --- Tambah alfabet (hanya huruf & cara baca; contoh kata sudah tidak dipakai) ---
-if ($csrf_ok && isset($_POST['tambah_alfabet'])) {
-    $huruf  = mysqli_real_escape_string($koneksi, trim($_POST['huruf_kiril'] ?? ''));
-    $baca   = mysqli_real_escape_string($koneksi, trim($_POST['cara_baca'] ?? ''));
-    if ($huruf !== '' && $baca !== '') {
-        // Kolom contoh_kata & arti_contoh masih NOT NULL di database, jadi diisi string kosong.
-        if (mysqli_query($koneksi, "INSERT INTO tb_alfabet (huruf_kiril, cara_baca, contoh_kata, arti_contoh) VALUES ('$huruf', '$baca', '', '')")) {
-            $pesan = 'Huruf alfabet berhasil ditambahkan.';
-        } else {
-            $pesan = 'Gagal menambah alfabet: ' . htmlspecialchars(mysqli_error($koneksi)); $pesan_tipe = 'err';
-        }
-    } else {
-        $pesan = 'Huruf dan cara baca wajib diisi.'; $pesan_tipe = 'err';
-    }
-}
-// --- Edit alfabet ---
-if ($csrf_ok && isset($_POST['simpan_alfabet'])) {
-    $id    = (int)($_POST['id'] ?? 0);
-    $huruf = mysqli_real_escape_string($koneksi, trim($_POST['huruf_kiril'] ?? ''));
-    $baca  = mysqli_real_escape_string($koneksi, trim($_POST['cara_baca'] ?? ''));
-    if ($id > 0 && $huruf !== '' && $baca !== '') {
-        if (mysqli_query($koneksi, "UPDATE tb_alfabet SET huruf_kiril = '$huruf', cara_baca = '$baca' WHERE id = $id")) {
-            $pesan = 'Huruf alfabet berhasil diperbarui.';
-        } else {
-            $pesan = 'Gagal memperbarui alfabet: ' . htmlspecialchars(mysqli_error($koneksi)); $pesan_tipe = 'err';
-        }
-    } else {
-        $pesan = 'Huruf dan cara baca wajib diisi.'; $pesan_tipe = 'err';
-    }
-}
-// --- Hapus alfabet ---
-if ($csrf_ok && isset($_POST['aksi_hapus_alfabet'])) {
-    $id = (int)($_POST['id'] ?? 0);
-    if ($id > 0) {
-        mysqli_query($koneksi, "DELETE FROM tb_alfabet WHERE id = $id");
-    }
-    header("Location: kelola_materi.php");
-    exit();
-}
 
 $q_pelajaran = mysqli_query($koneksi, "SELECT * FROM tb_pelajaran ORDER BY nomor_pelajaran ASC");
 $list_pelajaran = [];
@@ -156,10 +117,6 @@ if ($q_pelajaran) { while ($r = mysqli_fetch_assoc($q_pelajaran)) { $list_pelaja
 $q_kosakata = mysqli_query($koneksi, "SELECT k.*, p.judul_pelajaran FROM tb_kosakata k LEFT JOIN tb_pelajaran p ON k.id_pelajaran = p.id_pelajaran ORDER BY k.id_pelajaran ASC, k.id_kosakata ASC");
 $list_kosakata = [];
 if ($q_kosakata) { while ($r = mysqli_fetch_assoc($q_kosakata)) { $list_kosakata[] = $r; } }
-
-$q_alfabet = mysqli_query($koneksi, "SELECT * FROM tb_alfabet ORDER BY id ASC");
-$list_alfabet = [];
-if ($q_alfabet) { while ($r = mysqli_fetch_assoc($q_alfabet)) { $list_alfabet[] = $r; } }
 
 // Data pelajaran yang sedang diedit (materi, judul, deskripsi).
 $edit_pelajaran = null;
@@ -177,19 +134,11 @@ if (isset($_GET['edit_kosakata'])) {
     if ($q_edit && mysqli_num_rows($q_edit) > 0) { $edit_kosakata = mysqli_fetch_assoc($q_edit); }
 }
 
-// Data huruf alfabet yang sedang diedit.
-$edit_alfabet = null;
-if (isset($_GET['edit_alfabet'])) {
-    $id_edit = (int)$_GET['edit_alfabet'];
-    $q_edit = mysqli_query($koneksi, "SELECT * FROM tb_alfabet WHERE id = $id_edit");
-    if ($q_edit && mysqli_num_rows($q_edit) > 0) { $edit_alfabet = mysqli_fetch_assoc($q_edit); }
-}
-
 include __DIR__ . '/partials/header.php';
 ?>
 <div class="page-head">
     <h1>Kelola Materi</h1>
-    <p>Tambah, edit, atau hapus pelajaran, kosakata, dan huruf alfabet Kiril.</p>
+    <p>Tambah, edit, atau hapus pelajaran dan kosakata.</p>
 </div>
 
 <?php if ($pesan !== ''): ?>
@@ -340,57 +289,5 @@ include __DIR__ . '/partials/header.php';
         <?php if (count($list_kosakata) === 0): ?><tr><td colspan="7" style="color:var(--muted)">Belum ada kosakata.</td></tr><?php endif; ?>
     </table>
     </div>
-</div>
-
-<div class="card">
-    <h3 style="margin-bottom:12px;font-size:16px;">Tambah Huruf Alfabet</h3>
-    <form method="POST" action="">
-        <?= csrf_field() ?>
-        <div class="row">
-            <input type="text" name="huruf_kiril" placeholder="Huruf Kiril (mis. А)" required>
-            <input type="text" name="cara_baca" placeholder="Cara baca (mis. A)" required>
-        </div>
-        <button class="btn" type="submit" name="tambah_alfabet">Tambah Huruf</button>
-    </form>
-</div>
-
-<?php if ($edit_alfabet): ?>
-<div class="card" style="border:2px solid var(--gold);">
-    <h3 style="margin-bottom:12px;font-size:16px;">Edit Huruf Alfabet: <?= htmlspecialchars($edit_alfabet['huruf_kiril'] ?? '') ?></h3>
-    <form method="POST" action="">
-        <?= csrf_field() ?>
-        <input type="hidden" name="id" value="<?= (int)$edit_alfabet['id'] ?>">
-        <div class="row">
-            <input type="text" name="huruf_kiril" value="<?= htmlspecialchars($edit_alfabet['huruf_kiril'] ?? '') ?>" placeholder="Huruf Kiril (mis. А)" required>
-            <input type="text" name="cara_baca" value="<?= htmlspecialchars($edit_alfabet['cara_baca'] ?? '') ?>" placeholder="Cara baca (mis. A)" required>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn" type="submit" name="simpan_alfabet">Simpan Huruf</button>
-            <a class="btn ghost" href="kelola_materi.php">Batal</a>
-        </div>
-    </form>
-</div>
-<?php endif; ?>
-
-<div class="card">
-    <h3 style="margin-bottom:12px;font-size:16px;">Daftar Alfabet (<?= count($list_alfabet) ?>)</h3>
-    <table>
-        <tr><th style="width:80px">Huruf</th><th>Cara Baca</th><th style="width:150px">Aksi</th></tr>
-        <?php foreach ($list_alfabet as $a): ?>
-        <tr>
-            <td style="font-size:18px;font-weight:800;color:var(--primary-blue)"><?= htmlspecialchars($a['huruf_kiril'] ?? '') ?></td>
-            <td><?= htmlspecialchars($a['cara_baca'] ?? '') ?></td>
-            <td style="white-space:nowrap;">
-                <a class="btn small alt" href="?edit_alfabet=<?= (int)$a['id'] ?>">Edit</a>
-                <form method="POST" action="" style="display:inline;margin:0" onsubmit="return confirm('Hapus huruf ini?')">
-                    <?= csrf_field() ?>
-                    <input type="hidden" name="id" value="<?= (int)$a['id'] ?>">
-                    <button class="btn small danger" type="submit" name="aksi_hapus_alfabet" value="1">Hapus</button>
-                </form>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-        <?php if (count($list_alfabet) === 0): ?><tr><td colspan="3" style="color:var(--muted)">Belum ada data alfabet.</td></tr><?php endif; ?>
-    </table>
 </div>
 <?php include __DIR__ . '/partials/footer.php'; ?>
