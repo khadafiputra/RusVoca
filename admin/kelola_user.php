@@ -78,6 +78,47 @@ if ($csrf_ok && isset($_POST['aksi_reset_password'])) {
 }
 
 // ---------------------------------------------------------------------------
+// AKSI: Edit profil (nama, email, target harian)
+// ---------------------------------------------------------------------------
+if ($csrf_ok && isset($_POST['simpan_user'])) {
+    $id     = (int)($_POST['id'] ?? 0);
+    $nama   = trim($_POST['nama'] ?? '');
+    $email  = trim($_POST['email'] ?? '');
+    $target = (int)($_POST['target_waktu'] ?? 15);
+
+    // Target harian yang dikenal aplikasi hanya 10, 15, dan 30 menit.
+    if (!in_array($target, [10, 15, 30], true)) { $target = 15; }
+
+    $nama_aman  = mysqli_real_escape_string($koneksi, $nama);
+    $email_aman = mysqli_real_escape_string($koneksi, $email);
+
+    $q_cek = mysqli_query($koneksi, "SELECT id FROM tb_akun WHERE email = '$email_aman' AND id <> $id");
+    $email_pakai = ($q_cek && mysqli_num_rows($q_cek) > 0);
+
+    if ($id <= 0) {
+        $pesan = 'Akun tidak ditemukan.';
+        $pesan_tipe = 'err';
+    } elseif ($nama === '') {
+        $pesan = 'Nama wajib diisi.';
+        $pesan_tipe = 'err';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $pesan = 'Format email tidak valid.';
+        $pesan_tipe = 'err';
+    } elseif ($email_pakai) {
+        $pesan = 'Email sudah dipakai akun lain.';
+        $pesan_tipe = 'err';
+    } elseif (mysqli_query($koneksi, "UPDATE tb_akun SET nama = '$nama_aman', email = '$email_aman', target_waktu = '$target' WHERE id = $id")) {
+        if ($id === $id_saya) {
+            $_SESSION['nama'] = $nama;
+        }
+        $pesan = 'Profil pengguna berhasil diperbarui.';
+    } else {
+        $pesan = 'Gagal memperbarui profil pengguna.';
+        $pesan_tipe = 'err';
+    }
+}
+
+// ---------------------------------------------------------------------------
 // AKSI: Hapus akun
 // ---------------------------------------------------------------------------
 if ($csrf_ok && isset($_POST['aksi_hapus_user'])) {
@@ -132,17 +173,63 @@ $q_user = mysqli_query($koneksi, "
 ");
 if ($q_user) { while ($r = mysqli_fetch_assoc($q_user)) { $daftar[] = $r; } }
 
+// Data pengguna yang sedang diedit (dari ?edit_user=ID atau setelah submit form).
+$edit_user = null;
+$id_edit_user = 0;
+if (isset($_GET['edit_user'])) {
+    $id_edit_user = (int)$_GET['edit_user'];
+} elseif (isset($_POST['simpan_user'])) {
+    $id_edit_user = (int)($_POST['id'] ?? 0);
+}
+if ($id_edit_user > 0) {
+    $q_edit = mysqli_query($koneksi, "SELECT id, nama, email, role, target_waktu FROM tb_akun WHERE id = $id_edit_user");
+    if ($q_edit && mysqli_num_rows($q_edit) > 0) {
+        $edit_user = mysqli_fetch_assoc($q_edit);
+    }
+    // Bila validasi gagal, pertahankan isian terakhir agar admin tidak mengetik ulang.
+    if ($edit_user && $pesan_tipe === 'err' && isset($_POST['simpan_user'])) {
+        $target_post = (int)($_POST['target_waktu'] ?? $edit_user['target_waktu']);
+        $edit_user['nama']         = trim($_POST['nama'] ?? $edit_user['nama']);
+        $edit_user['email']        = trim($_POST['email'] ?? $edit_user['email']);
+        $edit_user['target_waktu'] = in_array($target_post, [10, 15, 30], true) ? $target_post : 15;
+    }
+}
+
 $total_admin = jml_admin($koneksi);
 
 include __DIR__ . '/partials/header.php';
 ?>
 <div class="page-head">
     <h1>Kelola Pengguna &amp; Hak Akses</h1>
-    <p>Atur siapa yang menjadi <strong>Admin</strong> atau <strong>Siswa</strong>, reset password, dan hapus akun bila perlu.</p>
+    <p>Atur hak akses, edit profil dan target harian, reset password, serta hapus akun bila perlu.</p>
 </div>
 
 <?php if ($pesan !== ''): ?>
     <div class="alert <?= $pesan_tipe === 'ok' ? 'alert-ok' : 'alert-err' ?>"><?= htmlspecialchars($pesan) ?></div>
+<?php endif; ?>
+
+<?php if ($edit_user): ?>
+<div class="card" style="border:2px solid var(--gold);">
+    <h3 style="margin-bottom:12px;font-size:16px;">Edit Profil: <?= htmlspecialchars($edit_user['nama'] ?? '') ?></h3>
+    <form method="POST" action="">
+        <?= csrf_field() ?>
+        <input type="hidden" name="id" value="<?= (int)$edit_user['id'] ?>">
+        <div class="row">
+            <input type="text" name="nama" value="<?= htmlspecialchars($edit_user['nama'] ?? '') ?>" placeholder="Nama lengkap" required>
+            <input type="email" name="email" value="<?= htmlspecialchars($edit_user['email'] ?? '') ?>" placeholder="Email" required>
+        </div>
+        <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px;">Target belajar harian</label>
+        <select name="target_waktu">
+            <?php foreach ([10, 15, 30] as $menit): ?>
+            <option value="<?= $menit ?>" <?= (int)($edit_user['target_waktu'] ?? 15) === $menit ? 'selected' : '' ?>><?= $menit ?> menit / hari</option>
+            <?php endforeach; ?>
+        </select>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn" type="submit" name="simpan_user">Simpan Profil</button>
+            <a class="btn ghost" href="kelola_user.php">Batal</a>
+        </div>
+    </form>
+</div>
 <?php endif; ?>
 
 <div class="card">
@@ -157,7 +244,7 @@ include __DIR__ . '/partials/header.php';
     <table>
         <tr>
             <th>Nama</th><th>Email</th><th>Hak Akses</th><th>Target</th>
-            <th>XP</th><th>Aktivitas</th><th>Terdaftar</th><th style="min-width:230px">Aksi</th>
+            <th>XP</th><th>Aktivitas</th><th>Terdaftar</th><th style="min-width:340px">Aksi</th>
         </tr>
         <?php if (count($daftar) === 0): ?>
             <tr><td colspan="8" style="color:var(--muted)">Tidak ada pengguna.</td></tr>
@@ -182,7 +269,8 @@ include __DIR__ . '/partials/header.php';
             <td style="font-weight:700;color:var(--primary-blue)"><?= number_format((int)$u['total_xp'], 0, ',', '.') ?></td>
             <td><?= (int)$u['jml_aktivitas'] ?></td>
             <td><small><?= !empty($u['tanggal_daftar']) ? htmlspecialchars(date('d/m/Y', strtotime($u['tanggal_daftar']))) : '-' ?></small></td>
-            <td>
+            <td style="white-space:nowrap;">
+                <a class="btn small alt" href="?edit_user=<?= (int)$u['id'] ?>">Edit</a>
                 <?php if (!$is_saya): ?>
                 <form method="POST" action="" style="display:inline"
                       onsubmit="return confirm('Ubah hak akses pengguna ini?')">
@@ -203,7 +291,7 @@ include __DIR__ . '/partials/header.php';
                     <button class="btn small danger" type="submit" name="aksi_hapus_user" value="1">Hapus</button>
                 </form>
                 <?php else: ?>
-                <small style="color:var(--muted)">Tidak tersedia untuk akun sendiri</small>
+                <small style="color:var(--muted);display:block;margin-top:6px;">Role &amp; password akun sendiri tidak bisa diubah di sini</small>
                 <?php endif; ?>
             </td>
         </tr>
