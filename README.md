@@ -23,7 +23,7 @@ materi tetap memakai teks sumbernya.
   - Kuis Audio / Listening (dinilai)
   - Latihan Berbicara / Speaking (dinilai)
   - Latihan Menulis / Writing (dinilai)
-- **Alfabet Kiril** - 33 huruf dengan bentuk, pelafalan, dan contoh.
+- **Alfabet Kiril** - 33 huruf dengan bentuk dan pelafalan.
 - **Riwayat** - daftar sesi kuis, skor, tanggal, dan **detail jawaban**
   (jawaban benar/salah per soal).
 - **Profil** - ubah nama, target belajar harian (10/15/30 menit), dan password.
@@ -35,7 +35,8 @@ materi tetap memakai teks sumbernya.
 
 - **Dashboard admin** - statistik pengguna, materi, dan aktivitas.
 - **Kelola materi** - tambah, ubah, hapus pelajaran dan kosakata.
-- **Kelola pengguna** - lihat akun, ubah role, hapus akun.
+- **Kelola pengguna** - lihat akun, ubah profil dan target harian, ubah role,
+  reset password, hapus akun.
 - **Rekap nilai** - rekap skor per siswa dan per mode.
 - **Akses penuh** - akun admin otomatis melihat semua bab terbuka dan
   tingkatan keahlian maksimal (Legenda) tanpa perlu mengerjakan latihan.
@@ -230,7 +231,7 @@ Setelah instalasi, cek hal berikut:
 12. Cek jam: `SELECT NOW();` di MySQL harus sama dengan `date('Y-m-d H:i:s')`
     di PHP (WIB).
 
-Semua 34 file PHP dapat dicek sintaksnya dengan:
+Semua 35 file PHP dapat dicek sintaksnya dengan:
 
 ```bash
 php -l namafile.php

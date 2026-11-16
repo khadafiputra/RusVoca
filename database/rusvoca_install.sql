@@ -59,8 +59,6 @@ CREATE TABLE `tb_alfabet` (
   `id` int NOT NULL AUTO_INCREMENT,
   `huruf_kiril` varchar(10) NOT NULL,
   `cara_baca` varchar(50) NOT NULL,
-  `contoh_kata` varchar(100) NOT NULL,
-  `arti_contoh` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -193,7 +191,7 @@ INSERT INTO `tb_kosakata` (`id_kosakata`, `id_pelajaran`, `kata_rusia`, `cara_ba
 /*!40000 ALTER TABLE `tb_kosakata` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `tb_alfabet` DISABLE KEYS */;
-INSERT INTO `tb_alfabet` (`id`, `huruf_kiril`, `cara_baca`, `contoh_kata`, `arti_contoh`) VALUES (1,'А а','A','Автобус (Avtobus)','Bus'),(2,'Б б','Be','Брат (Brat)','Saudara laki-laki'),(3,'В в','Ve','Вода (Voda)','Air'),(4,'Г г','Ge','Город (Gorod)','Kota'),(5,'Д д','De','Дом (Dom)','Rumah'),(6,'Е е','Ye','Еда (Yeda)','Makanan'),(7,'Ё ё','Yo','Ёлка (Yolka)','Pohon natal / cemara'),(8,'Ж ж','Zhe','Жена (Zhena)','Istri'),(9,'З з','Ze','Зима (Zima)','Musim dingin'),(10,'И и','I','Имя (Imya)','Nama'),(11,'Й й','I Kratkoye (Y)','Чай (Chay)','Teh'),(12,'К к','Ka','Книга (Kniga)','Buku'),(13,'Л л','El','Любовь (Lyubov)','Cinta'),(14,'М м','Em','Мама (Mama)','Ibu'),(15,'Н н','En','Ночь (Noch)','Malam'),(16,'О о','O','Окно (Okno)','Jendela'),(17,'П п','Pe','Папа (Papa)','Ayah'),(18,'Р р','Er','Работа (Rabota)','Pekerjaan'),(19,'С с','Es','Солнце (Solntse)','Matahari'),(20,'Т т','Te','Телефон (Telefon)','Telepon'),(21,'У у','U','Утро (Utro)','Pagi'),(22,'Ф ф','Ef','Фото (Foto)','Foto'),(23,'Х х','Kha','Хлеб (Khleb)','Roti'),(24,'Ц ц','Tse','Центр (Tsentr)','Pusat / Tengah'),(25,'Ч ч','Che','Часы (Chasy)','Jam / Arloji'),(26,'Ш ш','Sha','Школа (Shkola)','Sekolah'),(27,'Щ щ','Shcha','Борщ (Borsch)','Sup bit Rusia'),(28,'Ъ ъ','Tvyordyy Znak (Tanda Keras)','Subjek lunak/Keras','Pemisah pelafalan (tanpa bunyi)'),(29,'Ы ы','Yery (I Berat)','Сыр (Syr)','Keju'),(30,'Ь ь','Myagkiy Znak (Tanda Kelembutan)','День (Den)','Penghalus huruf konsonan akhir'),(31,'Э э','E','Это (Eto)','Ini'),(32,'Ю ю','Yu','Юг (Yug)','Selatan'),(33,'Я я','Ya','Яблоко (Yabloko)','Apel');
+INSERT INTO `tb_alfabet` (`id`, `huruf_kiril`, `cara_baca`) VALUES (1,'А а','A'),(2,'Б б','Be'),(3,'В в','Ve'),(4,'Г г','Ge'),(5,'Д д','De'),(6,'Е е','Ye'),(7,'Ё ё','Yo'),(8,'Ж ж','Zhe'),(9,'З з','Ze'),(10,'И и','I'),(11,'Й й','I Kratkoye (Y)'),(12,'К к','Ka'),(13,'Л л','El'),(14,'М м','Em'),(15,'Н н','En'),(16,'О о','O'),(17,'П п','Pe'),(18,'Р р','Er'),(19,'С с','Es'),(20,'Т т','Te'),(21,'У у','U'),(22,'Ф ф','Ef'),(23,'Х х','Kha'),(24,'Ц ц','Tse'),(25,'Ч ч','Che'),(26,'Ш ш','Sha'),(27,'Щ щ','Shcha'),(28,'Ъ ъ','Tvyordyy Znak (Tanda Keras)'),(29,'Ы ы','Yery (I Berat)'),(30,'Ь ь','Myagkiy Znak (Tanda Kelembutan)'),(31,'Э э','E'),(32,'Ю ю','Yu'),(33,'Я я','Ya');
 /*!40000 ALTER TABLE `tb_alfabet` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
