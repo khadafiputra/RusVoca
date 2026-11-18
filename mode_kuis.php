@@ -3,7 +3,6 @@ session_start();
 require_once 'config/koneksi.php';
 require_once 'config/progres.php';
 require_once 'config/riwayat_kuis.php';
-require_once 'config/bank_soal.php';
 require_once 'config/bahasa.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -82,9 +81,7 @@ while($row = mysqli_fetch_assoc($query_kosakata)){
     $kosakata_array[] =$row;
 }
 }
-// Soal diambil dari bank soal bab ini; jika kosong, otomatis dari kosakata.
-$soal_kuis = siapkan_soal_kuis($koneksi, $id_pelajaran, $kosakata_array);
-$json_soal = json_encode($soal_kuis);
+$json_kosakata = json_encode($kosakata_array);
 ?>
 
 <!DOCTYPE html>
@@ -256,20 +253,20 @@ $json_soal = json_encode($soal_kuis);
             <div class="quiz-context">
                 <div class="ctx-copy">
                     <b><?= t('Kuis Kosa Kata', 'Vocabulary Quiz') ?> · <?= htmlspecialchars(materi_t($data_pelajaran['judul_pelajaran'])) ?></b>
-                    <?= t('Soal diambil dari bank soal kuis bab ini. Jika bank soal kosong, soal otomatis memakai kosakata materi.', 'Questions come from this chapter quiz question bank. If the bank is empty, questions are generated from the vocabulary material.') ?> (<?= count($soal_kuis) ?> <?= t('soal', 'questions') ?>).
+                    <?= t('Semua soal diambil dari kosakata materi bab ini', 'All questions come from this chapter vocabulary material') ?> (<?= count($kosakata_array) ?> <?= t('kata', 'words') ?>).
                 </div>
                 <a href="mode_kosakata.php?id=<?= $id_pelajaran ?>"><?= t('Baca Materi Dulu', 'Read Material First') ?></a>
             </div>
         </div>
 
         <div class="quiz-container">
-            <?php if(count($soal_kuis) >= 2): ?>
+            <?php if(count($kosakata_array) >= 2): ?>
                 
                 <!-- Tampilan Kuis Berjalan -->
                 <div id="quiz-screen">
                     <div class="quiz-header">
                         <span><?= t('Pilih Arti yang Benar!', 'Choose the Correct Meaning!') ?></span>
-                        <span id="question-counter"><?= t('Pertanyaan', 'Question') ?> 1 / <?= count($soal_kuis) ?></span>
+                        <span id="question-counter"><?= t('Pertanyaan', 'Question') ?> 1 / <?= count($kosakata_array) ?></span>
                     </div>
                     <div class="progress-bar-bg">
                         <div class="progress-bar-fill" id="progress-bar"></div>
@@ -320,7 +317,7 @@ $json_soal = json_encode($soal_kuis);
                 </div>
 
             <?php else: ?>
-                <div style="color: var(--text-muted);"><?= t('Soal kurang dari 2. Tambahkan bank soal atau kosakata terlebih dahulu.', 'There are fewer than 2 questions. Add quiz questions or vocabulary first.') ?></div>
+                <div style="color: var(--text-muted);"><?= t('Materi kurang dari 2 kata. Kuis tidak bisa dijalankan.', 'There are fewer than 2 words. The quiz cannot run.') ?></div>
             <?php endif; ?>
         </div>
     </main>
@@ -328,8 +325,8 @@ $json_soal = json_encode($soal_kuis);
 
 <!-- SCRIPT LOGIKA KUIS -->
 <script>
-    // Ambil data soal dari PHP ke Javascript
-    const daftarSoal = <?= $json_soal ?>;
+    // Ambil data PHP ke Javascript
+    const dbKosakata = <?= $json_kosakata ?>;
     const TXT = {
         question: <?= json_encode(t('Pertanyaan', 'Question'), JSON_UNESCAPED_UNICODE) ?>,
         perfect: <?= json_encode(t('Sempurna!', 'Perfect!'), JSON_UNESCAPED_UNICODE) ?>,
@@ -341,7 +338,7 @@ $json_soal = json_encode($soal_kuis);
     let questions = [];
     let currentQIndex = 0;
     let score = 0;
-    let totalQuestions = 0; 
+    let totalQuestions = dbKosakata.length; 
     let detailJawaban = [];
 
     // Elemen DOM
@@ -368,10 +365,30 @@ $json_soal = json_encode($soal_kuis);
 
     // Inisialisasi Soal Kuis
     function initQuiz() {
-        questions = shuffle([...daftarSoal]);
-        totalQuestions = questions.length;
-        if (totalQuestions < 2) return;
-
+        if(dbKosakata.length < 2) return;
+        
+        // Acak urutan pertanyaan
+        let shuffledDB = shuffle([...dbKosakata]);
+        
+        shuffledDB.forEach(k => {
+            // Jawaban benar
+            let correctAns = k.arti_indonesia;
+            
+            // Ambil jawaban salah (Selain jawaban benar)
+            let wrongOptions = dbKosakata.filter(x => x.arti_indonesia !== correctAns).map(x => x.arti_indonesia);
+            wrongOptions = shuffle(wrongOptions).slice(0, 3); // Ambil maksimal 3 pengecoh
+            
+            // Gabungkan benar dan salah, lalu acak posisinya
+            let finalOptions = shuffle([correctAns, ...wrongOptions]);
+            
+            questions.push({
+                word: k.kata_rusia,
+                read: k.cara_baca,
+                correct: correctAns,
+                options: finalOptions
+            });
+        });
+        
         loadQuestion();
     }
 

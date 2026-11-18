@@ -39,7 +39,6 @@ materi tetap memakai teks sumbernya.
 
 - **Dashboard admin** - statistik pengguna, materi, dan aktivitas.
 - **Kelola materi** - tambah, ubah, hapus pelajaran dan kosakata.
-- **Kelola kuis** - isi bank soal kuis per bab (dipakai Kuis Kata dan Kuis Audio).
 - **Kelola pengguna** - lihat akun, ubah profil dan target harian, ubah role,
   reset password, hapus akun.
 - **Rekap nilai** - rekap skor per siswa dan per mode, plus unduh Ringkasan
@@ -133,8 +132,7 @@ File tersebut akan:
 > berisi data penting, karena tabel lama akan diganti.
 
 Tabel yang dibuat: `tb_akun`, `tb_pelajaran`, `tb_kosakata`, `tb_alfabet`,
-`tb_progres_belajar`, `tb_target_harian`, `tb_sesi_kuis`, `tb_jawaban_kuis`,
-`tb_bank_soal`.
+`tb_progres_belajar`, `tb_target_harian`, `tb_sesi_kuis`, `tb_jawaban_kuis`.
 
 ### Langkah 3 - Sesuaikan koneksi
 
