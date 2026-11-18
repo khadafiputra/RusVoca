@@ -20,11 +20,11 @@ $label_target = function_exists('t') ? t('Target Belajar Hari Ini', 'Today\'s Le
 $label_menit  = function_exists('t') ? t('menit', 'minutes') : 'menit';
 $label_tercapai = function_exists('t') ? t('Target tercapai!', 'Goal reached!') : 'Target tercapai!';
 $pesan_tercapai = function_exists('t')
-    ? 'Selamat! Kamu telah memenuhi target waktu pembelajaran hari ini.'
-    : 'Congratulations! You have met today\'s learning time goal.';
+    ? t('Selamat! Kamu telah memenuhi target waktu pembelajaran hari ini.', 'Congratulations! You have met today\'s learning time goal.')
+    : 'Selamat! Kamu telah memenuhi target waktu pembelajaran hari ini.';
 $pesan_keluar = function_exists('t')
-    ? 'Apakah Anda yakin keluar tetapi Anda belum mencapai target?'
-    : 'Are you sure you want to leave without reaching your target?';
+    ? t('Apakah Anda yakin keluar tetapi Anda belum mencapai target?', 'Are you sure you want to leave without reaching your target?')
+    : 'Apakah Anda yakin keluar tetapi Anda belum mencapai target?';
 ?>
 <style>
     .rv-target-widget {
