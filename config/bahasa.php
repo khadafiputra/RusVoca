@@ -115,7 +115,6 @@ function materi_t(string $teks): string
         'Kuis Audio' => 'Listening Quiz',
         'Latihan Berbicara' => 'Speaking Practice',
         'Latihan Menulis' => 'Writing Practice',
-        'Latihan (arsip)' => 'Practice (archive)',
         'Latihan' => 'Practice',
         'Siswa' => 'Student',
         '(Pelajaran dihapus)' => '(Lesson deleted)',

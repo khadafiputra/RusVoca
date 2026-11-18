@@ -3,6 +3,7 @@ session_start();
 require_once 'config/koneksi.php';
 require_once 'config/progres.php';
 require_once 'config/riwayat_kuis.php';
+require_once 'config/bank_soal.php';
 require_once 'config/bahasa.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -80,7 +81,9 @@ while($row = mysqli_fetch_assoc($query_kosakata)){
     $kosakata_array[] =$row;
 }
 }
-$json_kosakata = json_encode($kosakata_array);
+// Soal diambil dari bank soal bab ini; jika kosong, otomatis dari kosakata.
+$soal_kuis = siapkan_soal_kuis($koneksi, $id_pelajaran, $kosakata_array);
+$json_soal = json_encode($soal_kuis);
 ?>
 
 <!DOCTYPE html>
@@ -188,6 +191,7 @@ $json_kosakata = json_encode($kosakata_array);
                 <li class="nav-item active"><a href="kosakata.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h2v5H9V4zm0 7h2v2H9v-2zm0 4h2v2H9v-2zm6 2h-3v-2h3v2zm0-4h-3v-2h3v2zm0-5h-3V4h3v5z"/></svg><span><?= t('Kosakata', 'Vocabulary') ?></span></a></li>
                 <li class="nav-item"><a href="riwayat.php"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><?= t('Riwayat', 'History') ?></span></a></li>
                 <li class="nav-item"><a href="profil.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span><?= t('Profil Saya', 'My Profile') ?></span></a></li>
+                <?php include __DIR__ . '/partials/sidebar_admin.php'; ?>
                 <li class="nav-lang"><?= tombol_bahasa('sidebar') ?></li>
             </ul>
         </div>
@@ -209,12 +213,12 @@ $json_kosakata = json_encode($kosakata_array);
         </div>
 
         <div class="quiz-container">
-            <?php if(count($kosakata_array) >= 2): ?>
+            <?php if(count($soal_kuis) >= 2): ?>
                 
                 <div id="quiz-screen">
                     <div class="quiz-header">
                         <span style="color: var(--accent-orange);"><?= t('Dengarkan dan Pilih Arti!', 'Listen and Choose the Meaning!') ?></span>
-                        <span id="question-counter"><?= t('Pertanyaan', 'Question') ?> 1 / 5</span>
+                        <span id="question-counter"><?= t('Pertanyaan', 'Question') ?> 1 / <?= count($soal_kuis) ?></span>
                     </div>
                     <div class="progress-bar-bg">
                         <div class="progress-bar-fill" id="progress-bar"></div>
@@ -259,7 +263,7 @@ $json_kosakata = json_encode($kosakata_array);
                 </div>
 
             <?php else: ?>
-                <div style="color: var(--text-muted);"><?= t('Materi kurang dari 2 kata. Kuis tidak bisa dijalankan.', 'There are fewer than 2 words. The quiz cannot run.') ?></div>
+                <div style="color: var(--text-muted);"><?= t('Soal kurang dari 2. Tambahkan bank soal atau kosakata terlebih dahulu.', 'There are fewer than 2 questions. Add quiz questions or vocabulary first.') ?></div>
             <?php endif; ?>
         </div>
     </main>
@@ -267,7 +271,7 @@ $json_kosakata = json_encode($kosakata_array);
 
 <!-- SCRIPT LOGIKA KUIS MENDENGARKAN -->
 <script>
-    const dbKosakata = <?= $json_kosakata ?>;
+    const daftarSoal = <?= $json_soal ?>;
     const TXT = {
         question: <?= json_encode(t('Pertanyaan', 'Question'), JSON_UNESCAPED_UNICODE) ?>,
         unsupported: <?= json_encode(t('Maaf, browser tidak mendukung audio.', 'Sorry, this browser does not support audio.'), JSON_UNESCAPED_UNICODE) ?>
@@ -276,7 +280,7 @@ $json_kosakata = json_encode($kosakata_array);
     let questions = [];
     let currentQIndex = 0;
     let score = 0;
-    let totalQuestions = dbKosakata.length; 
+    let totalQuestions = 0; 
     let currentAudioWord = ""; // Menyimpan kata yang sedang diuji
     let detailJawaban = [];
 
@@ -300,24 +304,10 @@ $json_kosakata = json_encode($kosakata_array);
     }
 
     function initQuiz() {
-        if(dbKosakata.length < 2) return;
-        
-        let shuffledDB = shuffle([...dbKosakata]);
-        
-        shuffledDB.forEach(k => {
-            let correctAns = k.arti_indonesia;
-            let wrongOptions = dbKosakata.filter(x => x.arti_indonesia !== correctAns).map(x => x.arti_indonesia);
-            wrongOptions = shuffle(wrongOptions).slice(0, 3);
-            let finalOptions = shuffle([correctAns, ...wrongOptions]);
-            
-            questions.push({
-                word: k.kata_rusia,
-                read: k.cara_baca,
-                correct: correctAns,
-                options: finalOptions
-            });
-        });
-        
+        questions = shuffle([...daftarSoal]);
+        totalQuestions = questions.length;
+        if (totalQuestions < 2) return;
+
         loadQuestion();
     }
 
@@ -420,5 +410,6 @@ $json_kosakata = json_encode($kosakata_array);
 
 <script src="assets/js/sound.js"></script>
 <script src="assets/js/quiz-guard.js?v=20261108"></script>
+<?php include __DIR__ . '/partials/target_harian.php'; ?>
 </body>
 </html>

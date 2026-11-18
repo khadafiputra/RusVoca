@@ -12,6 +12,7 @@ $nama_admin = $nama_admin ?? ($_SESSION['nama'] ?? 'Admin');
 $menu = [
     'index'        => ['Dashboard',      'index.php',        'M4 13h6V4H4v9zm10 7h6v-9h-6v9zM4 20h6v-5H4v5zm10-11h6V4h-6v5z'],
     'materi'       => ['Kelola Materi',  'kelola_materi.php','M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h10v2H4v-2zM17 14l4 2-4 2v-4z'],
+    'kuis'         => ['Kelola Kuis',    'kelola_kuis.php',  'M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 10.9 12 11.5 12 13h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26A1.99 1.99 0 0011 5a2 2 0 00-2 2H7a4 4 0 118 0c0 .88-.36 1.68-.93 2.25z'],
     'pengguna'     => ['Kelola Pengguna','kelola_user.php',  'M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z'],
     'nilai'        => ['Rekap Nilai',    'rekap_nilai.php',  'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'],
 ];

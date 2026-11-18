@@ -27,6 +27,9 @@ materi tetap memakai teks sumbernya.
 - **Riwayat** - daftar sesi kuis, skor, tanggal, dan **detail jawaban**
   (jawaban benar/salah per soal).
 - **Profil** - ubah nama, target belajar harian (10/15/30 menit), dan password.
+- **Target belajar harian** - waktu belajar dihitung saat tab aktif. Siswa
+  belum bisa logout sebelum target hari itu terpenuhi, lalu mendapat
+  pemberitahuan saat target tercapai.
 - **Lupa password** - verifikasi kode OTP 6 digit (lihat catatan di bagian
   keamanan).
 - **Pelafalan otomatis** memakai Web Speech API bawaan browser.
@@ -35,9 +38,11 @@ materi tetap memakai teks sumbernya.
 
 - **Dashboard admin** - statistik pengguna, materi, dan aktivitas.
 - **Kelola materi** - tambah, ubah, hapus pelajaran dan kosakata.
+- **Kelola kuis** - isi bank soal kuis per bab (dipakai Kuis Kata dan Kuis Audio).
 - **Kelola pengguna** - lihat akun, ubah profil dan target harian, ubah role,
   reset password, hapus akun.
-- **Rekap nilai** - rekap skor per siswa dan per mode.
+- **Rekap nilai** - rekap skor per siswa dan per mode, plus unduh Ringkasan
+  Siswa dalam format PDF.
 - **Akses penuh** - akun admin otomatis melihat semua bab terbuka dan
   tingkatan keahlian maksimal (Legenda) tanpa perlu mengerjakan latihan.
 
@@ -127,7 +132,8 @@ File tersebut akan:
 > berisi data penting, karena tabel lama akan diganti.
 
 Tabel yang dibuat: `tb_akun`, `tb_pelajaran`, `tb_kosakata`, `tb_alfabet`,
-`tb_progres_belajar`, `tb_target_harian`, `tb_sesi_kuis`, `tb_jawaban_kuis`.
+`tb_progres_belajar`, `tb_target_harian`, `tb_sesi_kuis`, `tb_jawaban_kuis`,
+`tb_bank_soal`.
 
 ### Langkah 3 - Sesuaikan koneksi
 
@@ -250,8 +256,6 @@ php -l namafile.php
   Untuk pengembangan lanjutan, prepared statement lebih disarankan.
 - **Belum ada pagination** untuk riwayat/materi dalam jumlah sangat besar.
 - **Belum ada automated test**; pengujian masih manual.
-- Mode **Game Memori** dan **Tic-Tac-Toe** sudah dihapus dari alur, data lama
-  tetap ditampilkan sebagai arsip.
 
 ---
 

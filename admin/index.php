@@ -20,9 +20,6 @@ $label_mode = [
     'kuis_mendengarkan' => 'Kuis Audio',
     'mode_speaking'     => 'Berbicara',
     'mode_writing'      => 'Menulis',
-    // Kode lama tetap dipetakan agar riwayat lama tidak tampil sebagai "Latihan".
-    'mode_memori'       => 'Arsip Memori',
-    'mode_tictactoe'    => 'Arsip Tic-Tac-Toe',
 ];
 
 $jml_siswa     = hitung($koneksi, "SELECT COUNT(*) AS jml FROM tb_akun WHERE role = 'siswa'");
@@ -30,7 +27,7 @@ $jml_admin     = hitung($koneksi, "SELECT COUNT(*) AS jml FROM tb_akun WHERE rol
 $jml_pelajaran = hitung($koneksi, "SELECT COUNT(*) AS jml FROM tb_pelajaran");
 $jml_kosakata  = hitung($koneksi, "SELECT COUNT(*) AS jml FROM tb_kosakata");
 $jml_alfabet   = hitung($koneksi, "SELECT COUNT(*) AS jml FROM tb_alfabet");
-$aktivitas_hari= hitung($koneksi, "SELECT COUNT(*) AS jml FROM tb_progres_belajar WHERE DATE(tanggal_akses) = CURDATE()");
+$aktivitas_hari= hitung($koneksi, "SELECT COUNT(*) AS jml FROM tb_progres_belajar WHERE DATE(tanggal_akses) = CURDATE() AND mode_belajar IN ('kuis_kosakata','kuis_mendengarkan','mode_speaking','mode_writing')");
 
 // Papan peringkat (top 5 berdasarkan total XP = jumlah skor tertinggi tiap mode)
 $leaderboard = [];
@@ -40,6 +37,7 @@ $q_lb = mysqli_query($koneksi, "
     LEFT JOIN (
         SELECT user_id, MAX(skor) AS max_skor
         FROM tb_progres_belajar
+        WHERE mode_belajar IN ('kuis_kosakata','kuis_mendengarkan','mode_speaking','mode_writing')
         GROUP BY user_id, id_pelajaran, mode_belajar
     ) sub ON sub.user_id = a.id
     WHERE a.role = 'siswa'
@@ -56,6 +54,7 @@ $q_ak = mysqli_query($koneksi, "
     FROM tb_progres_belajar pb
     LEFT JOIN tb_akun a ON a.id = pb.user_id
     LEFT JOIN tb_pelajaran p ON p.id_pelajaran = pb.id_pelajaran
+    WHERE pb.mode_belajar IN ('kuis_kosakata','kuis_mendengarkan','mode_speaking','mode_writing')
     ORDER BY pb.tanggal_akses DESC
     LIMIT 8
 ");

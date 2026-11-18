@@ -13,9 +13,6 @@ $modes = [
     'kuis_mendengarkan' => 'Audio',
     'mode_speaking'     => 'Speaking',
     'mode_writing'      => 'Writing',
-    // Mode yang sudah dihapus tetap ditampilkan sebagai arsip bila ada datanya.
-    'mode_memori'       => 'Arsip Memori',
-    'mode_tictactoe'    => 'Arsip TicTacToe',
 ];
 
 // ---------------------------------------------------------------------------
@@ -38,6 +35,8 @@ if (!tanggal_sah($filter_sampai)) { $filter_sampai = ''; }
 $where_skor = [];
 if ($filter_siswa > 0)     { $where_skor[] = "user_id = $filter_siswa"; }
 if ($filter_bab > 0)       { $where_skor[] = "id_pelajaran = $filter_bab"; }
+$daftar_mode = implode(',', array_map(static function ($m) { return "'" . $m . "'"; }, array_keys($modes)));
+$where_skor[] = "mode_belajar IN ($daftar_mode)";
 if ($filter_dari !== '')   { $where_skor[] = "tanggal_akses >= '$filter_dari 00:00:00'"; }
 if ($filter_sampai !== '') { $where_skor[] = "tanggal_akses <= '$filter_sampai 23:59:59'"; }
 $sql_where = count($where_skor) > 0 ? 'WHERE ' . implode(' AND ', $where_skor) : '';
@@ -70,46 +69,6 @@ $skor = [];
 $q = mysqli_query($koneksi, "SELECT user_id, id_pelajaran, mode_belajar, MAX(skor) AS max_skor FROM tb_progres_belajar $sql_where GROUP BY user_id, id_pelajaran, mode_belajar");
 if ($q) { while ($r = mysqli_fetch_assoc($q)) { $skor[$r['user_id']][$r['id_pelajaran']][$r['mode_belajar']] = (int)$r['max_skor']; } }
 
-// Parameter filter yang dipakai ulang untuk tautan ekspor CSV.
-$params_filter = [];
-if ($filter_siswa > 0)     { $params_filter['siswa'] = $filter_siswa; }
-if ($filter_bab > 0)       { $params_filter['bab'] = $filter_bab; }
-if ($filter_dari !== '')   { $params_filter['dari'] = $filter_dari; }
-if ($filter_sampai !== '') { $params_filter['sampai'] = $filter_sampai; }
-$link_csv = 'rekap_nilai.php?' . http_build_query(array_merge($params_filter, ['export' => 'csv']));
-
-// Keterangan filter aktif.
-$info_filter = [];
-if ($filter_siswa > 0)     { $info_filter[] = 'siswa: ' . ($users[0]['nama'] ?? '-'); }
-if ($filter_bab > 0)       { $info_filter[] = 'bab: ' . (isset($pelajaran[0]) ? 'Bab ' . (int)$pelajaran[0]['nomor_pelajaran'] . ' - ' . $pelajaran[0]['judul_pelajaran'] : '-'); }
-if ($filter_dari !== '')   { $info_filter[] = 'dari ' . date('d/m/Y', strtotime($filter_dari)); }
-if ($filter_sampai !== '') { $info_filter[] = 'sampai ' . date('d/m/Y', strtotime($filter_sampai)); }
-$teks_filter = count($info_filter) > 0 ? 'Filter aktif — ' . implode(' · ', $info_filter) : 'Menampilkan seluruh data.';
-
-// ---------------------------------------------------------------------------
-// Ekspor CSV (diproses sebelum header HTML)
-// ---------------------------------------------------------------------------
-if (isset($_GET['export']) && $_GET['export'] === 'csv') {
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename="rekap_nilai_rusvoca_' . date('Ymd_His') . '.csv"');
-    $out = fopen('php://output', 'w');
-    fputs($out, "\xEF\xBB\xBF"); // BOM agar Excel membaca UTF-8
-    $head = ['Siswa', 'Email', 'Pelajaran'];
-    foreach ($modes as $label) { $head[] = $label; }
-    fputcsv($out, $head);
-    foreach ($users as $u) {
-        foreach ($pelajaran as $p) {
-            $row = [$u['nama'], $u['email'], 'Bab ' . (int)$p['nomor_pelajaran'] . ' - ' . $p['judul_pelajaran']];
-            foreach ($modes as $kode => $label) {
-                $row[] = $skor[$u['id']][$p['id_pelajaran']][$kode] ?? '';
-            }
-            fputcsv($out, $row);
-        }
-    }
-    fclose($out);
-    exit();
-}
-
 // Ringkasan per siswa (total XP & jumlah mode tuntas)
 $ringkasan = [];
 foreach ($users as $u) {
@@ -124,6 +83,46 @@ foreach ($users as $u) {
         }
     }
     $ringkasan[$u['id']] = ['xp' => $total_xp, 'tuntas' => $tuntas];
+}
+
+// Keterangan filter aktif.
+$info_filter = [];
+if ($filter_siswa > 0)     { $info_filter[] = 'siswa: ' . ($users[0]['nama'] ?? '-'); }
+if ($filter_bab > 0)       { $info_filter[] = 'bab: ' . (isset($pelajaran[0]) ? 'Bab ' . (int)$pelajaran[0]['nomor_pelajaran'] . ' - ' . $pelajaran[0]['judul_pelajaran'] : '-'); }
+if ($filter_dari !== '')   { $info_filter[] = 'dari ' . date('d/m/Y', strtotime($filter_dari)); }
+if ($filter_sampai !== '') { $info_filter[] = 'sampai ' . date('d/m/Y', strtotime($filter_sampai)); }
+$teks_filter = count($info_filter) > 0 ? 'Filter aktif - ' . implode(' | ', $info_filter) : 'Menampilkan seluruh data.';
+
+// Parameter filter yang dipakai ulang untuk tautan ekspor.
+$params_filter = [];
+if ($filter_siswa > 0)     { $params_filter['siswa'] = $filter_siswa; }
+if ($filter_bab > 0)       { $params_filter['bab'] = $filter_bab; }
+if ($filter_dari !== '')   { $params_filter['dari'] = $filter_dari; }
+if ($filter_sampai !== '') { $params_filter['sampai'] = $filter_sampai; }
+$link_pdf = 'rekap_nilai.php?' . http_build_query(array_merge($params_filter, ['export' => 'pdf']));
+
+// ---------------------------------------------------------------------------
+// Ekspor PDF Ringkasan Siswa (diproses sebelum header HTML)
+// ---------------------------------------------------------------------------
+if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
+    require_once __DIR__ . '/../config/pdf.php';
+
+    $baris_pdf = [];
+    foreach ($users as $u) {
+        $baris_pdf[] = [
+            'nama'   => (string)($u['nama'] ?? ''),
+            'email'  => (string)($u['email'] ?? ''),
+            'xp'     => (int)($ringkasan[$u['id']]['xp'] ?? 0),
+            'tuntas' => (int)($ringkasan[$u['id']]['tuntas'] ?? 0),
+        ];
+    }
+
+    $pdf = pdf_rekap_siswa($baris_pdf, $teks_filter);
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="ringkasan_siswa_rusvoca_' . date('Ymd_His') . '.pdf"');
+    header('Content-Length: ' . strlen($pdf));
+    echo $pdf;
+    exit();
 }
 
 include __DIR__ . '/partials/header.php';
@@ -177,7 +176,7 @@ include __DIR__ . '/partials/header.php';
 <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
         <strong>Ringkasan Siswa</strong>
-        <a class="btn alt" href="<?= htmlspecialchars($link_csv) ?>" style="display:inline-flex;align-items:center;gap:7px"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v11m0 0l-4-4m4 4l4-4"/></svg> Unduh CSV</a>
+        <a class="btn alt" href="<?= htmlspecialchars($link_pdf) ?>" style="display:inline-flex;align-items:center;gap:7px"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v11m0 0l-4-4m4 4l4-4"/></svg> Unduh PDF</a>
     </div>
     <div style="margin-top:14px;overflow-x:auto">
         <table>

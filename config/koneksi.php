@@ -21,11 +21,10 @@ mysqli_query($koneksi, "SET time_zone = '+07:00'");
 // ---------------------------------------------------------------------------
 // Penjaga Skema (self-healing)
 // Kolom mode_belajar HARUS fleksibel. Pada versi lama kolom ini bertipe ENUM
-// ('kosakata','flashcard','kuis_kosakata','game_memori','kuis_mendengarkan','catur_jawa')
-// sehingga kode mode baru (mode_memori, mode_tictactoe, mode_speaking, mode_writing)
-// ditolak MySQL dengan error "Data truncated for column 'mode_belajar'".
-// Jika database di-import ulang memakai skema lama, otomatis diubah ke VARCHAR
-// dan data lama dimigrasikan ke kode yang baru.
+// dengan daftar mode terbatas, sehingga kode mode baru (mode_speaking,
+// mode_writing) ditolak MySQL dengan error "Data truncated for column
+// 'mode_belajar'". Jika database di-import ulang memakai skema lama,
+// otomatis diubah ke VARCHAR.
 // ---------------------------------------------------------------------------
 try {
     $cek_kolom = mysqli_query($koneksi, "SELECT DATA_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tb_progres_belajar' AND COLUMN_NAME = 'mode_belajar'");
@@ -33,8 +32,6 @@ try {
 
     if ($info_kolom && strtolower((string)$info_kolom['DATA_TYPE']) === 'enum') {
         mysqli_query($koneksi, "ALTER TABLE tb_progres_belajar MODIFY mode_belajar VARCHAR(50) NOT NULL");
-        mysqli_query($koneksi, "UPDATE tb_progres_belajar SET mode_belajar = 'mode_memori' WHERE mode_belajar = 'game_memori'");
-        mysqli_query($koneksi, "UPDATE tb_progres_belajar SET mode_belajar = 'mode_tictactoe' WHERE mode_belajar = 'catur_jawa'");
     }
 
     // -----------------------------------------------------------------------

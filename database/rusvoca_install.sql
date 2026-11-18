@@ -3,7 +3,8 @@
 -- ----------------------------------------------------------------------------
 -- Isi file:
 --   1. Struktur semua tabel (tb_akun, tb_pelajaran, tb_kosakata, tb_alfabet,
---      tb_progres_belajar, tb_target_harian, tb_sesi_kuis, tb_jawaban_kuis).
+--      tb_progres_belajar, tb_target_harian, tb_sesi_kuis, tb_jawaban_kuis,
+--      tb_bank_soal).
 --   2. Data 12 bab materi, 144 kosakata, dan 33 huruf alfabet Kiril.
 --   3. TIDAK berisi akun/pengguna maupun riwayat belajar.
 --
@@ -61,6 +62,23 @@ CREATE TABLE `tb_alfabet` (
   `cara_baca` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `tb_bank_soal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_bank_soal` (
+  `id_soal` int NOT NULL AUTO_INCREMENT,
+  `id_pelajaran` int NOT NULL,
+  `pertanyaan` varchar(255) NOT NULL,
+  `jawaban_benar` varchar(255) NOT NULL,
+  `pilihan_salah_1` varchar(255) NOT NULL DEFAULT '',
+  `pilihan_salah_2` varchar(255) NOT NULL DEFAULT '',
+  `pilihan_salah_3` varchar(255) NOT NULL DEFAULT '',
+  `tanggal_dibuat` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_soal`),
+  KEY `idx_bank_pelajaran` (`id_pelajaran`),
+  CONSTRAINT `fk_bank_pelajaran` FOREIGN KEY (`id_pelajaran`) REFERENCES `tb_pelajaran` (`id_pelajaran`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `tb_jawaban_kuis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

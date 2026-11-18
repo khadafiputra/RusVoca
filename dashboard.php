@@ -16,7 +16,8 @@ $nama_depan = trim(explode(' ', trim($nama_user))[0] ?? '');
 if ($nama_depan === '') { $nama_depan = 'Siswa'; }
 $is_admin  = pengguna_admin($koneksi);
 $pesan_akses = $_SESSION['error_akses'] ?? '';
-unset($_SESSION['error_akses']);
+if ($pesan_akses === '') { $pesan_akses = $_SESSION['error_target'] ?? ''; }
+unset($_SESSION['error_akses'], $_SESSION['error_target']);
 
 // ===================================================================
 // SISTEM GRADE / TINGKATAN KEAHLIAN (helper bersama config/level.php)
@@ -62,6 +63,7 @@ $query_riwayat = mysqli_query($koneksi, "
     FROM tb_progres_belajar pb 
     LEFT JOIN tb_pelajaran p ON pb.id_pelajaran = p.id_pelajaran 
     WHERE pb.user_id = '$user_id' 
+      AND pb.mode_belajar IN ('kuis_kosakata','kuis_mendengarkan','mode_speaking','mode_writing')
     ORDER BY pb.tanggal_akses DESC 
     LIMIT 5
 ");
@@ -215,9 +217,7 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
                 
                 <!-- LINK PROFIL SUDAH DIPERBAIKI DI SINI -->
                 <li class="nav-item"><a href="profil.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span><?= t('Profil Saya', 'My Profile') ?></span></a></li>
-                <?php if ($is_admin): ?>
-                <li class="nav-item"><a href="admin/index.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg><span><?= t('Panel Admin', 'Admin Panel') ?></span></a></li>
-                <?php endif; ?>
+                <?php include __DIR__ . '/partials/sidebar_admin.php'; ?>
                 <li class="nav-lang"><?= tombol_bahasa('sidebar') ?></li>
             </ul>
         </div>
@@ -322,7 +322,6 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
                             if($riwayat['mode_belajar'] == 'kuis_mendengarkan') $nama_mode = "Kuis Audio";
                             if($riwayat['mode_belajar'] == 'mode_speaking') $nama_mode = "Latihan Berbicara";
                             if($riwayat['mode_belajar'] == 'mode_writing') $nama_mode = "Latihan Menulis";
-                            if(in_array($riwayat['mode_belajar'], ['mode_memori', 'mode_tictactoe'], true)) $nama_mode = "Latihan (arsip)";
                             
                             $warna_badge = ($riwayat['skor'] >= 60) ? "var(--accent-green)" : "#EF4444";
                             $bg_badge = ($riwayat['skor'] >= 60) ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)";
@@ -419,5 +418,6 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
     function closeModal(event) { if (event) { modal.classList.remove('show'); document.body.style.overflow = 'auto'; } }
 </script>
 
+<?php include __DIR__ . '/partials/target_harian.php'; ?>
 </body>
 </html> 

@@ -225,17 +225,6 @@ $cursive_tips = [
     ['cetak' => 'ш', 'tulis' => 'ш', 'catatan' => t('Tiga goresan vertikal; щ menambahkan ekor kecil di kanan bawah.', 'Three vertical strokes; щ adds a small tail at the lower right.')],
 ];
 
-// Latihan kilat membaca
-$latihan_baca = [
-    ['kata' => 'Привет', 'baca' => 'Privet', 'arti' => t('Halo (informal)', 'Hello (informal)')],
-    ['kata' => 'Спасибо', 'baca' => 'Spasiba', 'arti' => t('Terima kasih', 'Thank you')],
-    ['kata' => 'Молоко', 'baca' => 'Malako', 'arti' => t('Susu', 'Milk')],
-    ['kata' => 'Книга', 'baca' => 'Kniga', 'arti' => t('Buku', 'Book')],
-    ['kata' => 'Школа', 'baca' => 'Shkola', 'arti' => t('Sekolah', 'School')],
-    ['kata' => 'Дом', 'baca' => 'Dom', 'arti' => t('Rumah', 'House')],
-    ['kata' => 'Хлеб', 'baca' => 'Khlep', 'arti' => t('Roti', 'Bread')],
-    ['kata' => 'Друг', 'baca' => 'Druk', 'arti' => t('Teman', 'Friend')],
-];
 ?>
 
 <!DOCTYPE html>
@@ -286,7 +275,6 @@ $latihan_baca = [
         /* === KONTEN UTAMA === */
         .main-content { margin-left: 260px; flex: 1; padding: 34px 40px 70px; max-width: 1220px; }
         .alpha-section { scroll-margin-top: 96px; margin-bottom: 52px; }
-        #latihan { scroll-margin-top: 96px; }
 
         /* Navigasi lengket */
         .alpha-nav {
@@ -307,8 +295,6 @@ $latihan_baca = [
         .alpha-nav a:hover { background: #EFF6FF; color: var(--accent-blue); }
         .alpha-nav a.is-active { background: var(--primary-blue); color: #fff; box-shadow: 0 6px 14px rgba(15, 63, 122, .2); }
         .alpha-nav a.is-active b { color: #FDE68A; }
-        .alpha-nav .nav-quiz { margin-left: auto; background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A; }
-        .alpha-nav .nav-quiz:hover { background: #FEF3C7; color: #92400E; }
 
         /* Struktur */
         .structure-grid { display: grid; grid-template-columns: 1.35fr 1fr 1fr 1fr; gap: 14px; margin-bottom: 22px; }
@@ -442,30 +428,6 @@ $latihan_baca = [
         .cursive-write { font-family: 'Caveat', cursive; font-size: 28px; color: var(--accent-orange); line-height: 1; }
         .cursive-table td:last-child { color: var(--text-muted); font-size: 10.5px; }
 
-        /* Latihan kilat */
-        .reading-quiz { background: #0B2F5E; border-bottom: 3px solid var(--accent-gold); border-radius: 22px; padding: 26px; color: #fff; box-shadow: 0 18px 36px rgba(15, 63, 122, .18); }
-        .reading-quiz-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
-        .reading-quiz-head h3 { font-size: 19px; font-weight: 800; }
-        .reading-quiz-head p { font-size: 11.5px; color: rgba(255,255,255,.75); margin-top: 3px; }
-        .quiz-counter { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); padding: 7px 13px; border-radius: 999px; font-size: 11px; font-weight: 800; }
-        .quiz-word-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 6px 0 4px; flex-wrap: wrap; }
-        .quiz-word { font-size: 38px; font-weight: 800; letter-spacing: .5px; }
-        .quiz-reading { text-align: center; font-size: 11px; color: rgba(255,255,255,.7); font-weight: 600; margin-bottom: 16px; }
-        .quiz-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .quiz-option { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; padding: 12px; border-radius: 11px; font-size: 13px; font-weight: 800; cursor: pointer; transition: .18s; }
-        .quiz-option:hover:not(:disabled) { background: rgba(255,255,255,.18); transform: translateY(-2px); }
-        .quiz-option:disabled { cursor: default; }
-        .quiz-option.correct { background: #10B981; border-color: #10B981; }
-        .quiz-option.wrong { background: #EF4444; border-color: #EF4444; }
-        .quiz-feedback { text-align: center; font-size: 12px; font-weight: 700; margin-top: 14px; min-height: 18px; color: #FDE68A; }
-        .quiz-next { margin: 14px auto 0; display: none; background: #F2B233; color: #3B2500; border: none; border-radius: 10px; padding: 10px 22px; font-weight: 800; font-size: 12.5px; cursor: pointer; }
-        .quiz-next:hover { background: #F7C04A; }
-        .quiz-result { text-align: center; padding: 8px 0 2px; }
-        .quiz-result .big { font-size: 46px; font-weight: 800; color: #FDE68A; line-height: 1; margin-bottom: 8px; }
-        .quiz-result p { font-size: 12.5px; color: rgba(255,255,255,.8); margin-bottom: 16px; }
-        .quiz-restart { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); color: #fff; padding: 10px 18px; border-radius: 10px; font-weight: 800; font-size: 12.5px; cursor: pointer; }
-        .quiz-restart:hover { background: rgba(255,255,255,.24); }
-
         .tip-band { display: flex; gap: 12px; align-items: flex-start; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 14px; padding: 14px 16px; margin-top: 18px; }
         .tip-band svg { flex-shrink: 0; color: #B45309; margin-top: 1px; }
         .tip-band p { font-size: 11.5px; color: #92400E; line-height: 1.6; font-weight: 600; }
@@ -491,11 +453,9 @@ $latihan_baca = [
             .main-content { margin-left: 72px; padding: 22px 18px 60px; }
             .alpha-nav { top: 8px; }
             .alpha-nav a span { display: none; }
-            .alpha-nav .nav-quiz { margin-left: 0; }
             .structure-grid { grid-template-columns: 1fr; }
             .alphabet-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .steps { grid-template-columns: 1fr; }
-            .quiz-options { grid-template-columns: 1fr; }
             .alpha-search input { width: 100%; }
             .alpha-search { width: 100%; }
             .principle-band { flex-direction: column; gap: 10px; }
@@ -521,6 +481,7 @@ $latihan_baca = [
                 <li class="nav-item"><a href="kosakata.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h2v5H9V4zm0 7h2v2H9v-2zm0 4h2v2H9v-2zm6 2h-3v-2h3v2zm0-4h-3v-2h3v2zm0-5h-3V4h3v5z"/></svg><span><?= t('Kosakata', 'Vocabulary') ?></span></a></li>
                 <li class="nav-item"><a href="riwayat.php"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><?= t('Riwayat', 'History') ?></span></a></li>
                 <li class="nav-item"><a href="profil.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span><?= t('Profil Saya', 'My Profile') ?></span></a></li>
+                <?php include __DIR__ . '/partials/sidebar_admin.php'; ?>
                 <li class="nav-lang"><?= tombol_bahasa('sidebar') ?></li>
             </ul>
         </div>
@@ -545,7 +506,6 @@ $latihan_baca = [
                 <p><?= t('Mulai dari struktur dasar, pembagian huruf, poin kembar, aturan fonetik, sampai teknik membaca dan menulis. Klik tombol speaker untuk mendengar bunyi setiap huruf.', 'Start with the basic structure, letter divisions, false friends, phonetic rules, and reading and writing techniques. Click the speaker button to hear each letter.') ?></p>
                 <div class="rv-hero-actions">
                     <a href="#struktur" class="rv-btn rv-btn-gold"><?= t('Mulai dari Struktur', 'Start with Structure') ?></a>
-                    <a href="#latihan" class="rv-btn rv-btn-light"><?= t('Latihan Kilat', 'Quick Practice') ?></a>
                 </div>
                 <div class="rv-hero-stats">
                     <div class="rv-stat"><b><?= count($alfabet) ?></b><span><?= t('Huruf', 'Letters') ?></span></div>
@@ -565,7 +525,6 @@ $latihan_baca = [
             <a href="#kelompok"><b>02</b><span><?= t('Kelompok & Teknik', 'Groups & Techniques') ?></span></a>
             <a href="#fonetik"><b>03</b><span><?= t('Fonetik', 'Phonetics') ?></span></a>
             <a href="#teknik"><b>04</b><span><?= t('Teknik Baca-Tulis', 'Reading & Writing') ?></span></a>
-            <a href="#latihan" class="nav-quiz"><?= t('Latihan kilat', 'Quick practice') ?></a>
         </nav>
 
         <!-- ============================================================
@@ -892,25 +851,6 @@ $latihan_baca = [
                 </div>
             </div>
 
-            <div class="rv-section-head" style="margin-top: 10px;">
-                <div>
-                    <h3 style="font-size:16px;"><?= t('Cek pemahaman: baca kata berikut', 'Check your understanding: read these words') ?></h3>
-                    <p><?= t('Pilih cara baca yang benar. Gunakan tombol audio kalau perlu bantuan.', 'Choose the correct pronunciation. Use the audio button if you need help.') ?></p>
-                </div>
-            </div>
-
-            <!-- LATIHAN KILAT -->
-            <div class="reading-quiz" id="latihan">
-                <div class="reading-quiz-head">
-                    <div>
-                        <h3><?= t('Latihan Kilat Membaca', 'Quick Reading Practice') ?></h3>
-                        <p><?= t('4 soal acak dari kata-kata yang sering muncul.', '4 random questions from frequently used words.') ?></p>
-                    </div>
-                    <div class="quiz-counter" id="baca-counter"><?= t('Soal', 'Question') ?> 1 / 4</div>
-                </div>
-                <div id="baca-area"></div>
-            </div>
-
             <div class="tip-band">
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <p><?= t('Sudah lancar membaca? Lanjutkan ke', 'Reading smoothly already? Continue to') ?> <a href="kosakata.php" style="color:#92400E;font-weight:800;"><?= t('Pelajaran Kosa Kata', 'Vocabulary Lessons') ?></a><?= t(', lalu uji kemampuan menulismu di latihan Writing.', ', then test your writing skills in Writing Practice.') ?></p>
@@ -961,7 +901,7 @@ $latihan_baca = [
     // ============================================================
     (function () {
         const tautan = Array.from(document.querySelectorAll('.alpha-nav a'));
-        const bagian = ['struktur', 'kelompok', 'fonetik', 'teknik', 'latihan']
+        const bagian = ['struktur', 'kelompok', 'fonetik', 'teknik']
             .map(function (id) { return document.getElementById(id); })
             .filter(Boolean);
 
@@ -979,165 +919,7 @@ $latihan_baca = [
         bagian.forEach(function (b) { observer.observe(b); });
     })();
 
-    // ============================================================
-    // Latihan kilat membaca
-    // ============================================================
-    (function () {
-        const bank = <?= json_encode($latihan_baca, JSON_UNESCAPED_UNICODE) ?>;
-        const TXT = {
-            question: <?= json_encode(t('Soal', 'Question'), JSON_UNESCAPED_UNICODE) ?>,
-            listen: <?= json_encode(t('Dengarkan kata', 'Listen to the word'), JSON_UNESCAPED_UNICODE) ?>,
-            howRead: <?= json_encode(t('Bagaimana cara membaca kata ini?', 'How do you read this word?'), JSON_UNESCAPED_UNICODE) ?>,
-            next: <?= json_encode(t('Lanjut', 'Next'), JSON_UNESCAPED_UNICODE) ?>,
-            showResult: <?= json_encode(t('Lihat Hasil', 'See Result'), JSON_UNESCAPED_UNICODE) ?>,
-            nextQuestion: <?= json_encode(t('Soal Berikutnya', 'Next Question'), JSON_UNESCAPED_UNICODE) ?>,
-            correct: <?= json_encode(t('Benar!', 'Correct!'), JSON_UNESCAPED_UNICODE) ?>,
-            wrong: <?= json_encode(t('Belum tepat. Cara bacanya:', 'Not quite. The correct reading is:'), JSON_UNESCAPED_UNICODE) ?>,
-            done: <?= json_encode(t('Selesai', 'Finished'), JSON_UNESCAPED_UNICODE) ?>,
-            retry: <?= json_encode(t('Terus latih telinga dan matamu ya!', 'Keep training your ears and eyes!'), JSON_UNESCAPED_UNICODE) ?>,
-            perfect: <?= json_encode(t('Sempurna! Kamu sudah bisa membaca kata-kata ini dengan baik.', 'Perfect! You can read these words well.'), JSON_UNESCAPED_UNICODE) ?>,
-            good: <?= json_encode(t('Bagus! Tinggal sedikit lagi menuju lancar.', 'Good! You are almost fluent.'), JSON_UNESCAPED_UNICODE) ?>,
-            okay: <?= json_encode(t('Cukup baik. Ulangi bagian fonetik untuk memperkuat dasarnya.', 'Fairly good. Review the phonetics section to strengthen the basics.'), JSON_UNESCAPED_UNICODE) ?>,
-            tryAgain: <?= json_encode(t('Coba Lagi', 'Try Again'), JSON_UNESCAPED_UNICODE) ?>
-        };
-        const area = document.getElementById('baca-area');
-        const counter = document.getElementById('baca-counter');
-        let soal = [];
-        let indeks = 0;
-        let benar = 0;
-
-        function acak(arr) {
-            const a = arr.slice();
-            for (let i = a.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [a[i], a[j]] = [a[j], a[i]];
-            }
-            return a;
-        }
-
-        function mulai() {
-            soal = acak(bank).slice(0, 4).map(function (item) {
-                const salah = acak(bank.filter(function (x) { return x.baca !== item.baca; }))
-                    .slice(0, 3).map(function (x) { return x.baca; });
-                return {
-                    kata: item.kata,
-                    baca: item.baca,
-                    arti: item.arti,
-                    opsi: acak([item.baca].concat(salah))
-                };
-            });
-            indeks = 0;
-            benar = 0;
-            tampilkan();
-        }
-
-        function tampilkan() {
-            if (indeks >= soal.length) return hasil();
-            const q = soal[indeks];
-            counter.textContent = TXT.question + ' ' + (indeks + 1) + ' / ' + soal.length;
-            area.innerHTML = '';
-
-            const row = document.createElement('div');
-            row.className = 'quiz-word-row';
-            const kata = document.createElement('div');
-            kata.className = 'quiz-word';
-            kata.textContent = q.kata;
-            row.appendChild(kata);
-
-            const audio = document.createElement('button');
-            audio.type = 'button';
-            audio.className = 'rv-audio';
-            audio.title = TXT.listen;
-            audio.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>';
-            audio.addEventListener('click', function () {
-                if (window.RusvocaSound) RusvocaSound.klik();
-                ucapkanTeks(q.kata, { btn: audio, rate: 0.8 });
-            });
-            row.appendChild(audio);
-            area.appendChild(row);
-
-            const ket = document.createElement('div');
-            ket.className = 'quiz-reading';
-            ket.textContent = TXT.howRead;
-            area.appendChild(ket);
-
-            const grid = document.createElement('div');
-            grid.className = 'quiz-options';
-            q.opsi.forEach(function (opsi) {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'quiz-option';
-                btn.textContent = opsi;
-                btn.addEventListener('click', function () {
-                    pilih(btn, opsi, q);
-                });
-                grid.appendChild(btn);
-            });
-            area.appendChild(grid);
-
-            const feedback = document.createElement('div');
-            feedback.className = 'quiz-feedback';
-            feedback.id = 'baca-feedback';
-            area.appendChild(feedback);
-
-            const next = document.createElement('button');
-            next.type = 'button';
-            next.className = 'quiz-next';
-            next.textContent = TXT.next + ' →';
-            next.addEventListener('click', function () {
-                indeks++;
-                tampilkan();
-            });
-            area.appendChild(next);
-        }
-
-        function pilih(btn, opsi, q) {
-            const semua = area.querySelectorAll('.quiz-option');
-            semua.forEach(function (b) { b.disabled = true; });
-            const feedback = document.getElementById('baca-feedback');
-
-            if (opsi === q.baca) {
-                btn.classList.add('correct');
-                benar++;
-                feedback.textContent = TXT.correct + ' ' + q.kata + ' = ' + q.arti;
-                if (window.RusvocaSound) RusvocaSound.benar();
-            } else {
-                btn.classList.add('wrong');
-                semua.forEach(function (b) {
-                    if (b.textContent === q.baca) b.classList.add('correct');
-                });
-                feedback.textContent = TXT.wrong + ' ' + q.baca + ' (' + q.arti + ').';
-                if (window.RusvocaSound) RusvocaSound.salah();
-            }
-
-            const next = area.querySelector('.quiz-next');
-            if (next) {
-                next.style.display = 'inline-block';
-                next.textContent = (indeks === soal.length - 1) ? TXT.showResult + ' →' : TXT.nextQuestion + ' →';
-            }
-        }
-
-        function hasil() {
-            counter.textContent = TXT.done;
-            const persen = Math.round((benar / soal.length) * 100);
-            let pesan = TXT.retry;
-            if (persen === 100) pesan = TXT.perfect;
-            else if (persen >= 75) pesan = TXT.good;
-            else if (persen >= 50) pesan = TXT.okay;
-
-            area.innerHTML =
-                '<div class="quiz-result">' +
-                    '<div class="big">' + benar + '/' + soal.length + '</div>' +
-                    '<p>' + pesan + '</p>' +
-                    '<button type="button" class="quiz-restart" id="baca-ulang">' + TXT.tryAgain + '</button>' +
-                '</div>';
-
-            document.getElementById('baca-ulang').addEventListener('click', mulai);
-            if (window.RusvocaSound) RusvocaSound.menang();
-        }
-
-        mulai();
-    })();
 </script>
+<?php include __DIR__ . '/partials/target_harian.php'; ?>
 </body>
 </html>

@@ -39,9 +39,110 @@ function tandai_mulai_belajar(int $id_pelajaran, string $mode): void
 }
 
 /**
+ * Ambil durasi & status target harian user pada satu tanggal.
+ *
+ * @return array{menit:int,target:int,tercapai:bool,status:int}
+ */
+function durasi_harian_user(mysqli $koneksi, int $user_id, ?string $tanggal = null): array
+{
+    $tanggal = $tanggal ?: date('Y-m-d');
+    $target  = target_harian_user($koneksi, $user_id);
+    $menit   = 0;
+    $status  = 0;
+
+    $q = mysqli_query($koneksi, "SELECT durasi_menit, status_tercapai FROM tb_target_harian WHERE user_id = $user_id AND tanggal = '$tanggal'");
+    if ($q) {
+        $d = mysqli_fetch_assoc($q);
+        if ($d) {
+            $menit  = (int)($d['durasi_menit'] ?? 0);
+            $status = (int)($d['status_tercapai'] ?? 0);
+        }
+    }
+
+    return [
+        'menit'    => $menit,
+        'target'   => $target,
+        'tercapai' => $menit >= $target,
+        'status'   => $status,
+    ];
+}
+
+/**
+ * Tambah menit belajar ke target harian.
+ *
+ * @return bool True bila target baru saja tercapai pada penambahan ini.
+ */
+function tambah_durasi_harian(mysqli $koneksi, int $user_id, int $menit): bool
+{
+    if ($user_id <= 0 || $menit <= 0) { return false; }
+
+    $target = target_harian_user($koneksi, $user_id);
+    $hari   = date('Y-m-d');
+
+    $sebelum = 0;
+    $q = mysqli_query($koneksi, "SELECT status_tercapai FROM tb_target_harian WHERE user_id = $user_id AND tanggal = '$hari'");
+    if ($q) {
+        $d = mysqli_fetch_assoc($q);
+        if ($d) { $sebelum = (int)($d['status_tercapai'] ?? 0); }
+    }
+
+    mysqli_query($koneksi, "
+        INSERT INTO tb_target_harian (user_id, tanggal, durasi_menit, status_tercapai)
+        VALUES ($user_id, '$hari', $menit, 0)
+        ON DUPLICATE KEY UPDATE durasi_menit = durasi_menit + $menit
+    ");
+
+    mysqli_query($koneksi, "
+        UPDATE tb_target_harian
+        SET status_tercapai = IF(durasi_menit >= $target, 1, 0)
+        WHERE user_id = $user_id AND tanggal = '$hari'
+    ");
+
+    $sesudah = 0;
+    $q2 = mysqli_query($koneksi, "SELECT status_tercapai FROM tb_target_harian WHERE user_id = $user_id AND tanggal = '$hari'");
+    if ($q2) {
+        $d2 = mysqli_fetch_assoc($q2);
+        if ($d2) { $sesudah = (int)($d2['status_tercapai'] ?? 0); }
+    }
+
+    return $sesudah === 1 && $sebelum === 0;
+}
+
+/**
+ * Catat detik belajar dari heartbeat browser lalu ubah ke menit penuh.
+ * Sisa detik disimpan di session agar tidak hilang.
+ *
+ * @return array{menit:int,target:int,tercapai:bool,baru_tercapai:bool,detik_tersimpan:int}
+ */
+function tambah_detik_belajar(mysqli $koneksi, int $user_id, int $detik): array
+{
+    $hari = date('Y-m-d');
+    if (($_SESSION['belajar_detik_tanggal'] ?? '') !== $hari) {
+        $_SESSION['belajar_detik'] = 0;
+        $_SESSION['belajar_detik_tanggal'] = $hari;
+    }
+
+    $detik = max(0, min(120, $detik)); // batasi agar tidak melonjak
+    $_SESSION['belajar_detik'] = (int)($_SESSION['belajar_detik'] ?? 0) + $detik;
+
+    $baru  = false;
+    $menit = intdiv((int)$_SESSION['belajar_detik'], 60);
+    if ($menit > 0) {
+        $_SESSION['belajar_detik'] = (int)$_SESSION['belajar_detik'] - ($menit * 60);
+        $baru = tambah_durasi_harian($koneksi, $user_id, $menit);
+    }
+
+    $data = durasi_harian_user($koneksi, $user_id);
+    $data['baru_tercapai']   = $baru;
+    $data['detik_tersimpan'] = (int)($_SESSION['belajar_detik'] ?? 0);
+    return $data;
+}
+
+/**
  * Hitung durasi sesi yang baru diselesaikan lalu tambahkan ke target harian.
- * Minimal 1 menit setiap menyelesaikan latihan, dibatasi maksimal 60 menit
- * agar tidak melebih-lebihkan bila tab dibiarkan terbuka lama.
+ * Waktu nyata sudah dicatat lewat heartbeat, jadi di sini hanya sisa detik
+ * yang belum menjadi menit penuh. Minimal 1 menit per latihan tetap dijaga
+ * tanpa menghitung ganda bila heartbeat sudah mencatatnya.
  *
  * @return int Jumlah menit yang dicatat.
  */
@@ -51,34 +152,22 @@ function catat_durasi_belajar(mysqli $koneksi, int $user_id, int $id_pelajaran, 
         return 0;
     }
 
-    $mulai = $_SESSION['belajar_mulai'][$id_pelajaran][$mode] ?? null;
-    $menit = 1; // minimal 1 menit tiap menyelesaikan satu latihan
-    if (is_numeric($mulai) && (int)$mulai > 0) {
-        $detik = time() - (int)$mulai;
-        $menit = max(1, (int)round($detik / 60));
-        if ($menit > 60) {
-            $menit = 60;
-        }
-    }
-    // Hindari terhitung dua kali bila form ter-submit ulang.
     unset($_SESSION['belajar_mulai'][$id_pelajaran][$mode]);
 
-    $target = target_harian_user($koneksi, $user_id);
-    $hari   = date('Y-m-d');
+    $hari  = date('Y-m-d');
+    $detik = (int)($_SESSION['belajar_detik'] ?? 0);
+    $menit = intdiv($detik, 60);
+    if ($menit > 0) {
+        $_SESSION['belajar_detik'] = $detik - ($menit * 60);
+        tambah_durasi_harian($koneksi, $user_id, $menit);
+    }
 
-    // Tambah durasi hari ini (butuh index unik uniq_user_tanggal).
-    mysqli_query($koneksi, "
-        INSERT INTO tb_target_harian (user_id, tanggal, durasi_menit, status_tercapai)
-        VALUES ($user_id, '$hari', $menit, 0)
-        ON DUPLICATE KEY UPDATE durasi_menit = durasi_menit + $menit
-    ");
-
-    // Perbarui status tercapai berdasarkan total menit hari ini.
-    mysqli_query($koneksi, "
-        UPDATE tb_target_harian
-        SET status_tercapai = IF(durasi_menit >= $target, 1, 0)
-        WHERE user_id = $user_id AND tanggal = '$hari'
-    ");
+    // Jamin minimal 1 menit untuk satu latihan yang selesai.
+    $data = durasi_harian_user($koneksi, $user_id, $hari);
+    if ($data['menit'] < 1) {
+        tambah_durasi_harian($koneksi, $user_id, 1);
+        $menit = 1;
+    }
 
     return $menit;
 }

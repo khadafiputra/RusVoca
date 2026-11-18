@@ -22,22 +22,15 @@
 -- =====================================================================
 -- BAGIAN A [WAJIB] - Perbaikan kolom mode_belajar
 -- ---------------------------------------------------------------------
--- MASALAH: kolom bertipe ENUM lama:
---   enum('kosakata','flashcard','kuis_kosakata','game_memori',
---        'kuis_mendengarkan','catur_jawa')
--- Aplikasi menyimpan kode mode baru (mode_memori, mode_tictactoe,
--- mode_speaking, mode_writing) yang TIDAK ADA di ENUM itu, sehingga
--- MySQL melempar error:
+-- MASALAH: pada skema lama kolom ini bertipe ENUM dengan daftar mode yang
+-- terbatas. Aplikasi menyimpan kode mode baru (mode_speaking, mode_writing)
+-- yang tidak ada di ENUM tersebut, sehingga MySQL melempar error:
 --   "Data truncated for column 'mode_belajar' at row 1"
 -- dan kuis gagal menyimpan skor + halaman error.
 -- SOLUSI: ubah ENUM menjadi VARCHAR(50) agar semua kode mode diterima.
 -- =====================================================================
 ALTER TABLE tb_progres_belajar
     MODIFY mode_belajar VARCHAR(50) NOT NULL;
-
--- Migrasi kode mode lama -> kode baru agar skor/badge lama tetap terbaca
-UPDATE tb_progres_belajar SET mode_belajar = 'mode_memori'    WHERE mode_belajar = 'game_memori';
-UPDATE tb_progres_belajar SET mode_belajar = 'mode_tictactoe' WHERE mode_belajar = 'catur_jawa';
 
 
 -- =====================================================================

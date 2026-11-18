@@ -164,6 +164,7 @@ $q_user = mysqli_query($koneksi, "
         FROM (
             SELECT user_id, id_pelajaran, mode_belajar, MAX(skor) AS max_skor
             FROM tb_progres_belajar
+            WHERE mode_belajar IN ('kuis_kosakata','kuis_mendengarkan','mode_speaking','mode_writing')
             GROUP BY user_id, id_pelajaran, mode_belajar
         ) t
         GROUP BY user_id

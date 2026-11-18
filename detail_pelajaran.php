@@ -255,6 +255,7 @@ if (function_exists('mb_substr')) {
                 
                 <!-- LINK PROFIL SUDAH DIPERBAIKI DI SINI -->
                 <li class="nav-item"><a href="profil.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span><?= t('Profil Saya', 'My Profile') ?></span></a></li>
+                <?php include __DIR__ . '/partials/sidebar_admin.php'; ?>
                 <li class="nav-lang"><?= tombol_bahasa('sidebar') ?></li>
             </ul>
         </div>
@@ -407,5 +408,6 @@ if (function_exists('mb_substr')) {
     </main>
 </div>
 
+<?php include __DIR__ . '/partials/target_harian.php'; ?>
 </body>
 </html>

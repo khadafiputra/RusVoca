@@ -177,6 +177,7 @@ while ($row = mysqli_fetch_assoc($query_kosakata)) {
                 <li class="nav-item active"><a href="kosakata.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h2v5H9V4zm0 7h2v2H9v-2zm0 4h2v2H9v-2zm6 2h-3v-2h3v2zm0-4h-3v-2h3v2zm0-5h-3V4h3v5z"/></svg><span><?= t('Kosakata', 'Vocabulary') ?></span></a></li>
                 <li class="nav-item"><a href="riwayat.php"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><?= t('Riwayat', 'History') ?></span></a></li>
                 <li class="nav-item"><a href="profil.php"><svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span><?= t('Profil Saya', 'My Profile') ?></span></a></li>
+                <?php include __DIR__ . '/partials/sidebar_admin.php'; ?>
                 <li class="nav-lang"><?= tombol_bahasa('sidebar') ?></li>
             </ul>
         </div>
@@ -361,5 +362,6 @@ while ($row = mysqli_fetch_assoc($query_kosakata)) {
 </script>
 <script src="assets/js/sound.js"></script>
 <script src="assets/js/quiz-guard.js?v=20261108"></script>
+<?php include __DIR__ . '/partials/target_harian.php'; ?>
 </body>
 </html>

@@ -31,6 +31,7 @@ if (!function_exists('hitung_level')) {
                 SELECT MAX(skor) AS max_skor
                 FROM tb_progres_belajar
                 WHERE user_id = '$user_id'
+                  AND mode_belajar IN ('kuis_kosakata','kuis_mendengarkan','mode_speaking','mode_writing')
                 GROUP BY id_pelajaran, mode_belajar
             ) AS subquery
         ");
