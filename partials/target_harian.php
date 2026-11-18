@@ -22,6 +22,9 @@ $label_tercapai = function_exists('t') ? t('Target tercapai!', 'Goal reached!') 
 $pesan_tercapai = function_exists('t')
     ? 'Selamat! Kamu telah memenuhi target waktu pembelajaran hari ini.'
     : 'Congratulations! You have met today\'s learning time goal.';
+$pesan_keluar = function_exists('t')
+    ? 'Apakah Anda yakin keluar tetapi Anda belum mencapai target?'
+    : 'Are you sure you want to leave without reaching your target?';
 ?>
 <style>
     .rv-target-widget {
@@ -72,7 +75,8 @@ window.RUSVOCA_TARGET = {
     target: <?= (int)$data_target['target'] ?>,
     tercapai: <?= $data_target['tercapai'] ? 'true' : 'false' ?>,
     tanggal: <?= json_encode(date('Y-m-d')) ?>,
-    pesanTercapai: <?= json_encode($pesan_tercapai) ?>
+    pesanTercapai: <?= json_encode($pesan_tercapai) ?>,
+    pesanKeluar: <?= json_encode($pesan_keluar) ?>
 };
 </script>
 <script src="assets/js/target-harian.js"></script>

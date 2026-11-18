@@ -19,6 +19,8 @@
     var toastTimer = null;
 
     var kunciNotif = 'rusvoca_target_notif_' + cfg.tanggal;
+    var tercapai = !!cfg.tercapai;
+    var navigasiInternal = false;
 
     function sudahDiberitahu() {
         try { return localStorage.getItem(kunciNotif) === '1'; } catch (e) { return false; }
@@ -43,6 +45,7 @@
         var menit  = Math.max(0, parseInt(data.menit, 10) || 0);
         var persen = Math.min(100, Math.round((menit / target) * 100));
         var selesai = !!data.tercapai;
+        tercapai = selesai;
 
         if (fill)     { fill.style.width = persen + '%'; }
         if (menitEl)  { menitEl.textContent = menit; }
@@ -89,6 +92,64 @@
             // Jaringan sedang bermasalah; coba lagi pada heartbeat berikutnya.
         });
     }
+
+    // --- Peringatan keluar sebelum target tercapai -------------------------
+    // Navigasi di dalam aplikasi (klik tautan atau submit form biasa) tidak
+    // dianggap keluar, jadi tidak memunculkan peringatan.
+    document.addEventListener('click', function (ev) {
+        var el = ev.target;
+        while (el && el !== document && el.tagName !== 'A') { el = el.parentElement; }
+        if (!el || el.tagName !== 'A') { return; }
+        var href = el.getAttribute('href') || '';
+        if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0) { return; }
+        if (el.target && el.target !== '_self') { return; }
+        if (el.hasAttribute('download')) { return; }
+        navigasiInternal = true;
+    }, true);
+
+    // Peringatan saat menutup tab/halaman. Browser hanya menampilkan pesan
+    // bawaannya, jadi teks khusus tidak bisa dipaksakan di sini.
+    window.addEventListener('beforeunload', function (ev) {
+        if (tercapai || navigasiInternal) { return; }
+        var pesan = cfg.pesanKeluar || 'Apakah Anda yakin keluar tetapi Anda belum mencapai target?';
+        ev.preventDefault();
+        ev.returnValue = pesan;
+        return pesan;
+    });
+
+    // Tombol keluar (logout) sebelum target tercapai: tahan dulu, lalu minta
+    // konfirmasi. Jika memilih Ya, form dikirim dengan penanda konfirmasi.
+    document.addEventListener('submit', function (ev) {
+        var form = ev.target;
+        if (!form || form.tagName !== 'FORM') { return; }
+
+        var action = form.getAttribute('action') || '';
+        var tombolKeluar = /(^|\/)logout\.php(\?|$)/.test(action);
+        if (!tombolKeluar) {
+            navigasiInternal = true;
+            return;
+        }
+        if (tercapai) { return; }
+
+        ev.preventDefault();
+        ev.stopPropagation();
+        ev.stopImmediatePropagation();
+
+        if (!window.confirm(cfg.pesanKeluar || 'Apakah Anda yakin keluar tetapi Anda belum mencapai target?')) {
+            return;
+        }
+
+        navigasiInternal = true;
+        var penanda = form.querySelector('input[name="konfirmasi_keluar"]');
+        if (!penanda) {
+            penanda = document.createElement('input');
+            penanda.type = 'hidden';
+            penanda.name = 'konfirmasi_keluar';
+            form.appendChild(penanda);
+        }
+        penanda.value = '1';
+        HTMLFormElement.prototype.submit.call(form);
+    }, true);
 
     setInterval(kirimHeartbeat, 15000);
 

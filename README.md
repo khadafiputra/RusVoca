@@ -27,9 +27,10 @@ materi tetap memakai teks sumbernya.
 - **Riwayat** - daftar sesi kuis, skor, tanggal, dan **detail jawaban**
   (jawaban benar/salah per soal).
 - **Profil** - ubah nama, target belajar harian (10/15/30 menit), dan password.
-- **Target belajar harian** - waktu belajar dihitung saat tab aktif. Siswa
-  belum bisa logout sebelum target hari itu terpenuhi, lalu mendapat
-  pemberitahuan saat target tercapai.
+- **Target belajar harian** - waktu belajar dihitung saat tab aktif. Saat
+  target tercapai muncul pemberitahuan. Bila siswa mencoba logout atau
+  menutup tab sebelum target terpenuhi, muncul konfirmasi; keluar tetap
+  diizinkan setelah memilih Ya.
 - **Lupa password** - verifikasi kode OTP 6 digit (lihat catatan di bagian
   keamanan).
 - **Pelafalan otomatis** memakai Web Speech API bawaan browser.
