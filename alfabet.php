@@ -268,7 +268,7 @@ $cursive_tips = [
         .avatar-circle { width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-blue); display: flex; align-items: center; justify-content: center; color: #fff; }
         .user-info { flex: 1; overflow: hidden; }
         .user-info-name { font-size: 13px; font-weight: 700; color: var(--text-dark); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-        .user-info-role { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+        .user-info-role { font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
         .logout-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 6px; transition: all 0.2s; }
         .logout-btn:hover { color: #EF4444; background-color: rgba(239, 68, 68, 0.1); }
 
@@ -489,7 +489,7 @@ $cursive_tips = [
             <div class="avatar-circle"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
             <div class="user-info">
                 <div class="user-info-name"><?= htmlspecialchars($nama_user); ?></div>
-                <div class="user-info-role"><?= t('Siswa', 'Student') ?></div>
+                <div class="user-info-role" style="color: <?= $level['warna'] ?>;"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="<?= $level['ikon'] ?>"/></svg><span><?= htmlspecialchars(materi_t($level['nama'])) ?></span></div>
             </div>
             <form action="logout.php" method="POST" style="display: flex;" onsubmit="return confirm('<?= t('Apakah Anda yakin ingin keluar?', 'Are you sure you want to log out?') ?>');">
                 <?= csrf_field() ?><button type="submit" class="logout-btn"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button>

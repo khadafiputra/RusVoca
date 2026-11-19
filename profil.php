@@ -253,7 +253,7 @@ $tanggal_daftar = !empty($data_user['tanggal_daftar']) ? format_tanggal($data_us
             <div class="avatar-circle"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
             <div class="user-info">
                 <div class="user-info-name"><?= htmlspecialchars($nama_user); ?></div>
-                <div class="user-info-role" style="color: <?= $grade_color ?>;"><?= $grade_icon ?><span><?= htmlspecialchars(materi_t($grade_name)) ?></span></div>
+                <div class="user-info-role" style="color: <?= $level['warna'] ?>;"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="<?= $level['ikon'] ?>"/></svg><span><?= htmlspecialchars(materi_t($level['nama'])) ?></span></div>
             </div>
             <form action="logout.php" method="POST" style="display: flex;" onsubmit="return confirm('<?= t('Apakah Anda yakin ingin keluar?', 'Are you sure you want to log out?') ?>');"><?= csrf_field() ?><button type="submit" class="logout-btn"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button></form>
         </div>

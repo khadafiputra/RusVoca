@@ -122,26 +122,26 @@ if ($q_rekap) {
         .app-layout { display: flex; min-height: 100vh; }
 
         /* Sidebar */
-        .sidebar { width: 260px; background: #fff; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; position: fixed; height: 100vh; left: 0; top: 0; z-index: 50; }
+        .sidebar { width: 260px; background: #FFFFFF; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; position: fixed; height: 100vh; left: 0; top: 0; z-index: 50; }
         .brand-header { display: flex; align-items: center; gap: 12px; padding-bottom: 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; padding-left: 10px; }
         .brand-logo-img { width: 42px; height: 42px; object-fit: contain; }
         .brand-text { display: flex; flex-direction: column; }
         .brand-name { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: var(--primary-blue); }
-        .brand-name span { color: var(--accent-gold); }
+        .brand-name span { color: #E09B19; }
         .brand-sub { font-size: 9px; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); margin-top: 2px; }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: .18s; }
-        .nav-item a:hover { background: var(--bg-light); color: var(--primary-blue); }
-        .nav-item.active a { background: var(--primary-blue); color: #fff; }
+        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
+        .nav-item a:hover { background-color: var(--bg-light); color: var(--primary-blue); }
+        .nav-item.active a { background-color: var(--primary-blue); color: #FFFFFF; box-shadow: 0 4px 12px rgba(15, 63, 122, 0.15); }
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .nav-icon.solid { fill: currentColor; stroke: none; }
-        .user-profile-bottom { display: flex; align-items: center; gap: 12px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; margin-top: auto; }
-        .avatar-circle { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-blue); display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+        .user-profile-bottom { display: flex; align-items: center; gap: 12px; background-color: var(--bg-light); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; margin-top: auto; }
+        .avatar-circle { width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-blue); display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
         .user-info { flex: 1; overflow: hidden; }
-        .user-info-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .user-info-role { font-size: 11px; color: var(--text-muted); font-weight: 500; }
-        .logout-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 6px; }
-        .logout-btn:hover { color: var(--accent-red); background: rgba(220, 76, 76, .1); }
+        .user-info-name { font-size: 13px; font-weight: 700; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-info-role { font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+        .logout-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 6px; transition: all 0.2s; }
+        .logout-btn:hover { color: #EF4444; background-color: rgba(239, 68, 68, 0.1); }
 
         /* Konten */
         .main-content { margin-left: 260px; flex: 1; padding: 38px 40px 70px; max-width: 1120px; }
@@ -245,9 +245,9 @@ if ($q_rekap) {
             .brand-text, .user-info { display: none; }
             .brand-logo-img { width: 32px; height: 32px; }
             .brand-header { padding-bottom: 12px; margin-bottom: 12px; justify-content: center; padding-left: 0; }
-            .user-profile-bottom { justify-content: center; padding: 8px; flex-direction: column; gap: 14px; }
+            .user-profile-bottom { justify-content: center; padding: 8px; flex-direction: column; gap: 15px; }
             .nav-item a { justify-content: center; padding: 12px; }
-            .nav-item span:not(.brand-name span) { display: none; }
+            .nav-item span { display: none; }
             .main-content { margin-left: 72px; padding: 24px 18px 60px; }
             .page-title { font-size: 25px; }
             .history-card { padding: 4px 16px; }
@@ -282,7 +282,7 @@ if ($q_rekap) {
         </div>
         <div class="user-profile-bottom">
             <div class="avatar-circle"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
-            <div class="user-info"><div class="user-info-name"><?= htmlspecialchars($nama_user); ?></div><div class="user-info-role"><?= t('Siswa', 'Student') ?></div></div>
+            <div class="user-info"><div class="user-info-name"><?= htmlspecialchars($nama_user); ?></div><div class="user-info-role" style="color: <?= $level['warna'] ?>;"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="<?= $level['ikon'] ?>"/></svg><span><?= htmlspecialchars(materi_t($level['nama'])) ?></span></div></div>
             <form action="logout.php" method="POST" style="display:flex;" onsubmit="return confirm('<?= t('Apakah Anda yakin ingin keluar?', 'Are you sure you want to log out?') ?>');">
                 <?= csrf_field() ?><button type="submit" class="logout-btn" aria-label="Keluar"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button>
             </form>
