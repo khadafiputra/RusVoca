@@ -4,6 +4,12 @@
  * Header + navigasi bersama untuk semua halaman admin.
  * Variabel yang dipakai: $judul (judul tab), $active (menu aktif).
  */
+// Tolak akses langsung ke file partial ini.
+if (!isset($judul) && !isset($koneksi)) {
+    http_response_code(403);
+    exit('Akses langsung tidak diizinkan.');
+}
+
 if (!isset($judul))  { $judul  = 'Panel Admin'; }
 if (!isset($active)) { $active = ''; }
 // Nama admin bisa berasal dari halaman pemanggil; sediakan fallback agar aman.
