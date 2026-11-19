@@ -21,23 +21,36 @@ if (session_status() === PHP_SESSION_NONE) {
  */
 function role_aktif(mysqli $koneksi): string
 {
-    if (isset($_SESSION['role']) && $_SESSION['role'] !== '') {
-        return (string)$_SESSION['role'];
+    // Hasil disimpan selama satu request agar tidak query berulang kali.
+    static $role_cache = null;
+    if ($role_cache !== null) {
+        return $role_cache;
     }
 
-    $role = 'siswa';
-    $uid  = (int)($_SESSION['user_id'] ?? 0);
-    if ($uid > 0) {
-        $q = mysqli_query($koneksi, "SELECT role FROM tb_akun WHERE id = $uid");
-        if ($q) {
-            $d = mysqli_fetch_assoc($q);
-            if ($d && !empty($d['role'])) {
-                $role = (string)$d['role'];
-            }
-        }
+    $uid = (int)($_SESSION['user_id'] ?? 0);
+    if ($uid <= 0) {
+        $role_cache = 'siswa';
+        return $role_cache;
     }
+
+    // Selalu cocokkan dengan database supaya perubahan hak akses
+    // (mis. admin diturunkan menjadi siswa) langsung berlaku tanpa
+    // menunggu pengguna logout lebih dulu.
+    $role = 'siswa';
+    $q = mysqli_query($koneksi, "SELECT role FROM tb_akun WHERE id = $uid");
+    if ($q) {
+        $d = mysqli_fetch_assoc($q);
+        if ($d && !empty($d['role'])) {
+            $role = (string)$d['role'];
+        }
+    } elseif (isset($_SESSION['role']) && $_SESSION['role'] !== '') {
+        // Jika query gagal, gunakan nilai sesi sebagai cadangan.
+        $role = (string)$_SESSION['role'];
+    }
+
     $_SESSION['role'] = $role;
-    return $role;
+    $role_cache = $role;
+    return $role_cache;
 }
 
 /** Apakah user yang login berperan sebagai admin? */
