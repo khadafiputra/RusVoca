@@ -232,7 +232,7 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
                     <span><?= htmlspecialchars(materi_t($grade_name)) ?></span>
                 </div>
             </div>
-            <form action="logout.php" method="POST" style="display: flex;" onsubmit="return confirm('<?= t('Apakah Anda yakin ingin keluar dari RusVoca?', 'Are you sure you want to leave RusVoca?') ?>');">
+            <form action="logout.php" method="POST" style="display: flex;" onsubmit="return confirm('<?= t('Apakah Anda yakin ingin keluar?', 'Are you sure you want to log out?') ?>');">
                 <?= csrf_field() ?><button type="submit" class="logout-btn" title="Keluar"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button>
             </form>
         </div>

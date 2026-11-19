@@ -66,22 +66,28 @@ Tidak perlu Composer, Node.js, atau build step.
 ```
 rusvoca/
 ├── admin/                 Halaman admin (dashboard, materi, user, nilai)
+│   └── partials/          header.php, footer.php (layout panel admin)
 ├── assets/
-│   ├── css/               auth.css, learn-ui.css
+│   ├── css/               auth.css, learn-ui.css, level-theme.css
 │   ├── img/               logo, ilustrasi, background
-│   └── js/                audio.js, sound.js, quiz-guard.js
+│   └── js/                audio.js, sound.js, quiz-guard.js, target-harian.js
 ├── config/
 │   ├── koneksi.php        Koneksi database + penyelarasan zona waktu
 │   ├── keamanan.php       Sesi, CSRF, rate limit, OTP, timezone
 │   ├── bahasa.php         Terjemahan ID/EN
 │   ├── auth.php           Helper role siswa/admin
+│   ├── level.php          Perhitungan XP, level, dan tema
 │   ├── progres.php        Helper target belajar harian
-│   └── riwayat_kuis.php   Simpan/baca riwayat + detail jawaban
+│   ├── riwayat_kuis.php   Simpan/baca riwayat + detail jawaban
+│   └── pdf.php            Generator PDF rekap nilai admin
 ├── database/
 │   ├── rusvoca_install.sql  Instalasi lengkap (struktur + materi)
 │   ├── perbaikan.sql        Migrasi/perbaikan untuk database lama
 │   ├── materi_pelajaran.sql Upgrade materi & kosakata
 │   └── riwayat_kuis.sql     Tabel riwayat (dibuat otomatis oleh aplikasi)
+├── partials/
+│   ├── sidebar_admin.php  Menu samping untuk akun admin
+│   └── target_harian.php  Widget target belajar harian
 ├── storage/
 │   ├── throttle/          File rate limit (tidak di-commit)
 │   └── backup/            Arsip lokal (tidak di-commit)
@@ -92,6 +98,9 @@ rusvoca/
 
 Halaman utama: `index.php` (landing), `login.php`, `register.php`,
 `dashboard.php`, `kosakata.php`, `alfabet.php`, `riwayat.php`, `profil.php`.
+Halaman belajar: `detail_pelajaran.php`, `mode_kosakata.php`,
+`mode_flashcard.php`, `mode_kuis.php`, `mode_mendengarkan.php`,
+`mode_speaking.php`, `mode_writing.php`.
 
 ---
 
@@ -236,7 +245,7 @@ Setelah instalasi, cek hal berikut:
 12. Cek jam: `SELECT NOW();` di MySQL harus sama dengan `date('Y-m-d H:i:s')`
     di PHP (WIB).
 
-Semua 35 file PHP dapat dicek sintaksnya dengan:
+Semua 39 file PHP dapat dicek sintaksnya dengan:
 
 ```bash
 php -l namafile.php

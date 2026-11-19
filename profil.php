@@ -255,7 +255,7 @@ $tanggal_daftar = !empty($data_user['tanggal_daftar']) ? format_tanggal($data_us
                 <div class="user-info-name"><?= htmlspecialchars($nama_user); ?></div>
                 <div class="user-info-role" style="color: <?= $grade_color ?>;"><?= $grade_icon ?><span><?= htmlspecialchars(materi_t($grade_name)) ?></span></div>
             </div>
-            <form action="logout.php" method="POST" style="display: flex;" onsubmit="return confirm('<?= t('Yakin ingin keluar?', 'Are you sure you want to log out?') ?>');"><?= csrf_field() ?><button type="submit" class="logout-btn"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button></form>
+            <form action="logout.php" method="POST" style="display: flex;" onsubmit="return confirm('<?= t('Apakah Anda yakin ingin keluar?', 'Are you sure you want to log out?') ?>');"><?= csrf_field() ?><button type="submit" class="logout-btn"><svg style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button></form>
         </div>
     </aside>
 

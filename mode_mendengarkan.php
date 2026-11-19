@@ -111,6 +111,7 @@ $json_kosakata = json_encode($kosakata_array);
         .brand-name span { color: #E09B19; }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; }
         .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
+        .nav-item a:hover { background-color: var(--bg-light); color: var(--primary-blue); }
         .nav-item.active a { background-color: var(--primary-blue); color: #FFFFFF; box-shadow: 0 4px 12px rgba(15, 63, 122, 0.15); }
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .nav-icon.solid { fill: currentColor; stroke: none; }
@@ -118,6 +119,9 @@ $json_kosakata = json_encode($kosakata_array);
         .avatar-circle { width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-blue); display: flex; align-items: center; justify-content: center; color: #fff; }
         .user-info { flex: 1; overflow: hidden; }
         .user-info-name { font-size: 13px; font-weight: 700; color: var(--text-dark); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        .user-info-role { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+        .logout-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 6px; transition: all 0.2s; }
+        .logout-btn:hover { color: #EF4444; background-color: rgba(239, 68, 68, 0.1); }
         
         /* KONTEN UTAMA */
         .main-content { margin-left: 260px; flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; }
@@ -170,6 +174,10 @@ $json_kosakata = json_encode($kosakata_array);
             .sidebar { width: 72px; padding: 16px 8px; }
             .brand-text, .user-info { display: none; }
             .brand-logo-img { width: 32px; height: 32px; }
+            .brand-header { padding-bottom: 12px; margin-bottom: 12px; justify-content: center; padding-left: 0; }
+            .user-profile-bottom { justify-content: center; padding: 8px; flex-direction: column; gap: 15px; }
+            .nav-item a { justify-content: center; padding: 12px; }
+            .nav-item span { display: none; }
             .main-content { margin-left: 72px; padding: 24px; }
             .options-grid { grid-template-columns: 1fr; }
         }
