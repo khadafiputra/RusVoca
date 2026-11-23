@@ -22,6 +22,23 @@ canvas {
     max-width: 100%;
 }
 
+/* ---------- Sidebar selalu menempel di atas viewport ---------- */
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: auto !important;
+    height: 100vh;
+}
+
+/* Gunakan tinggi viewport dinamis di browser ponsel agar bagian bawah
+   sidebar tidak terpotong saat address bar muncul/hilang. */
+@supports (height: 100dvh) {
+    .sidebar {
+        height: 100dvh;
+    }
+}
+
 /* ==========================================================================
    LAYOUT SISWA (sidebar rail + konten utama)
    ========================================================================== */
