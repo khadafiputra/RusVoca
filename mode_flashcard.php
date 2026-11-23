@@ -167,6 +167,7 @@ $json_kosakata = json_encode($kosakata_array);
 
         .empty-state { text-align: center; padding: 40px; border: 1px dashed var(--border-color); border-radius: 12px; color: var(--text-muted); width: 100%; max-width: 600px; margin-top: 40px; }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body>
 

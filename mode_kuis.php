@@ -221,6 +221,7 @@ $json_kosakata = json_encode($kosakata_array);
             .options-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body>
 

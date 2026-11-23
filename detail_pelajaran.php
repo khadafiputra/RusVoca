@@ -232,6 +232,7 @@ if (function_exists('mb_substr')) {
             .mode-text .title-wrapper { flex-direction: column; align-items: flex-start; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body class="<?= htmlspecialchars($level_kelas) ?>">
 

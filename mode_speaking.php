@@ -172,6 +172,7 @@ if (count($kosakata_array) < 1) {
             .main-content { margin-left: 72px; padding: 24px; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body>
 

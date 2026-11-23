@@ -113,6 +113,7 @@ if (isset($_SESSION['user_id'])) {
             .login-left, .login-right { padding: 30px; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body>
 

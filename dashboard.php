@@ -194,6 +194,7 @@ $jumlah_riwayat = ($query_riwayat) ? mysqli_num_rows($query_riwayat) : 0;
             .main-content { margin-left: 72px; padding: 24px; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body class="<?= htmlspecialchars($level_kelas) ?>">
 

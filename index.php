@@ -134,6 +134,7 @@ $nama_user = $_SESSION['nama'] ?? '';
             .float-1 { left: 8px; } .float-2 { right: 8px; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body>
 

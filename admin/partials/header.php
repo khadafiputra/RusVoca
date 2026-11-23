@@ -82,6 +82,7 @@ $menu = [
             .row { grid-template-columns:1fr; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/mobile.css?v=20261123">
 </head>
 <body>
 <header class="admin-topbar">

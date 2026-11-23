@@ -257,6 +257,7 @@ if ($q_rekap) {
             .attempt-title span { display: block; margin-top: 2px; }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/mobile.css?v=20261123">
 </head>
 <body class="<?= htmlspecialchars($level_kelas) ?>">
 
